@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Apartment Finder</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+
+  <body>
+    <header>
+      <h1>Apartment Finder</h1>
+    </header>
+
+    <main>
+      <section id="search">
+        <input type="text" id="location" placeholder="Enter location" />
+        <input type="number" id="price" placeholder="Max price" />
+        <input type="number" id="bedrooms" placeholder="Bedrooms" />
+        <button id="search-btn">Search</button>
+        <button id="near-me-btn">Near Me</button>
+      </section>
+
+      <section id="results"></section>
+
+      <section id="contact-form">
+        <h2>Contact Agent</h2>
+        <input type="text" id="name" placeholder="Your Name" />
+        <input type="email" id="email" placeholder="Your Email" />
+        <textarea id="message" placeholder="Message"></textarea>
+        <button id="send-btn">Send</button>
+      </section>
+    </main>
+  </body>
+
+  <script src="app.js"></script>
+</html>
