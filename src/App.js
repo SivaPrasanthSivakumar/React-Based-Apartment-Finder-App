@@ -1,6 +1,25 @@
 import React, { useState, useEffect } from "react";
 import "./styles.css";
 
+class ErrorBoundary extends React.Component {
+  state = { hasError: false };
+
+  static getDerivedStateFromError() {
+    return { hasError: true };
+  }
+
+  componentDidCatch(error, info) {
+    console.error("ErrorBoundary caught an error:", error, info);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return <h1>Something went wrong.</h1>;
+    }
+    return this.props.children;
+  }
+}
+
 function App() {
   const [location, setLocation] = useState("");
   const [price, setPrice] = useState("");
@@ -19,6 +38,9 @@ function App() {
       const response = await fetch(
         `http://localhost:5000/api/apartments?location=${location}&price=${price}&bedrooms=${bedrooms}`
       );
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
       const data = await response.json();
       setResults(
         data.length
@@ -32,7 +54,7 @@ function App() {
       );
     } catch (error) {
       console.error("Error fetching apartments:", error);
-      setResults("Error fetching apartments.");
+      setResults("Error fetching apartments. Please try again later.");
     }
   };
 
@@ -75,6 +97,16 @@ function App() {
 
   return (
     <div>
+      {/* Debug element added to confirm rendering */}
+      <div
+        style={{
+          backgroundColor: "#ff0",
+          padding: "1rem",
+          textAlign: "center",
+        }}
+      >
+        Front End is rendering
+      </div>
       <header>
         <h1>Apartment Finder</h1>
         <button onClick={showHelp}>Help</button>
@@ -133,4 +165,10 @@ function App() {
   );
 }
 
-export default App;
+export default function WrappedApp() {
+  return (
+    <ErrorBoundary>
+      <App />
+    </ErrorBoundary>
+  );
+}
