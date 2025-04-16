@@ -10,10 +10,24 @@ function App() {
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
 
-  const searchApartments = () => {
-    setResults(
-      `Searching for apartments in ${location} under $${price} with ${bedrooms} bedrooms...`
-    );
+  const searchApartments = async () => {
+    try {
+      const response = await fetch(
+        `http://localhost:5000/api/apartments?location=${location}&price=${price}&bedrooms=${bedrooms}`
+      );
+      const data = await response.json();
+      setResults(
+        data.length
+          ? data.map(
+              (apartment) =>
+                `${apartment.title} - $${apartment.price}, ${apartment.bedrooms} bedrooms`
+            ).join("\n")
+          : "No apartments found."
+      );
+    } catch (error) {
+      console.error("Error fetching apartments:", error);
+      setResults("Error fetching apartments.");
+    }
   };
 
   const searchNearbyApartments = () => {
