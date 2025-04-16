@@ -5,6 +5,7 @@ This is a full-stack application for finding apartments. The project includes a 
 ## Prerequisites
 
 Before running the project, ensure you have the following installed:
+
 - [Node.js](https://nodejs.org/) (v14 or later)
 - [MySQL](https://www.mysql.com/)
 - [XAMPP](https://www.apachefriends.org/) (optional, for managing MySQL)
@@ -12,17 +13,21 @@ Before running the project, ensure you have the following installed:
 ## Setup Instructions
 
 ### 1. Clone the Repository
+
 Clone the project to your local machine:
+
 ```bash
 git clone <repository-url>
 cd CSIT537-Project-3
 ```
 
 ### 2. Set Up the Database
+
 1. Open **phpMyAdmin** or any MySQL client.
 2. Run the SQL script located at `database/schema.sql` to create the database and populate it with sample data.
 
 ### 3. Configure the Backend
+
 1. Navigate to the `server` folder:
    ```bash
    cd server
@@ -38,6 +43,7 @@ cd CSIT537-Project-3
    The backend will run on `http://localhost:5000`.
 
 ### 4. Configure the Frontend
+
 1. Navigate to the project root:
    ```bash
    cd ..
@@ -55,9 +61,11 @@ cd CSIT537-Project-3
 ## Available Commands
 
 ### Backend Commands
+
 - `node server/index.js`: Start the backend server.
 
 ### Frontend Commands
+
 - `npm start`: Start the React development server.
 - `npm run build`: Build the React application for production.
 - `npm test`: Run tests for the React application.

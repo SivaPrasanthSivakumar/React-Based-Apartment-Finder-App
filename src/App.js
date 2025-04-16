@@ -18,10 +18,12 @@ function App() {
       const data = await response.json();
       setResults(
         data.length
-          ? data.map(
-              (apartment) =>
-                `${apartment.title} - $${apartment.price}, ${apartment.bedrooms} bedrooms`
-            ).join("\n")
+          ? data
+              .map(
+                (apartment) =>
+                  `${apartment.title} - $${apartment.price}, ${apartment.bedrooms} bedrooms`
+              )
+              .join("\n")
           : "No apartments found."
       );
     } catch (error) {
