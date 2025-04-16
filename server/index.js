@@ -21,13 +21,14 @@ const db = mysql.createConnection({
 db.connect((err) => {
   if (err) {
     console.error("Error connecting to the database:", err);
-    return;
+    process.exit(1);
   }
   console.log("Connected to the MySQL database.");
 });
 
 // API endpoint to fetch apartments
 app.get("/api/apartments", (req, res) => {
+  console.log("GET /api/apartments called with query:", req.query);
   const { location, price, bedrooms } = req.query;
 
   let query = "SELECT * FROM apartments WHERE 1=1";
@@ -49,9 +50,13 @@ app.get("/api/apartments", (req, res) => {
   db.query(query, params, (err, results) => {
     if (err) {
       console.error("Error fetching apartments:", err);
-      res.status(500).send("Error fetching apartments.");
-      return;
+      return res.status(500).send("Error fetching apartments.");
     }
+    if (!results || results.length === 0) {
+      console.log("No apartments found.");
+      return res.status(200).json([]);
+    }
+    console.log("Apartments found:", results.length);
     res.json(results);
   });
 });

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./styles.css";
 
 function App() {
@@ -9,6 +9,10 @@ function App() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
+
+  useEffect(() => {
+    console.log("App component loaded");
+  }, []);
 
   const searchApartments = async () => {
     try {
