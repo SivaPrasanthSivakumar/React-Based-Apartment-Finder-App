@@ -10,27 +10,52 @@ const PORT = 5000;
 app.use(cors());
 app.use(bodyParser.json());
 
-// MySQL connection
-const db = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: "",
-  database: "NearbyHomes",
-});
+// MySQL connection setup
+const db = setupDatabaseConnection();
 
-db.connect((err) => {
-  if (err) {
-    console.error("Error connecting to the database:", err);
-    process.exit(1);
-  }
-  console.log("Connected to the MySQL database.");
-});
+function setupDatabaseConnection() {
+  const connection = mysql.createConnection({
+    host: "localhost",
+    user: "root",
+    password: "",
+    database: "NearbyHomes",
+  });
+
+  connection.connect((err) => {
+    if (err) {
+      console.error("Error connecting to the database:", err);
+      process.exit(1);
+    }
+    console.log("Connected to the MySQL database.");
+  });
+
+  return connection;
+}
 
 // API endpoint to fetch apartments
-app.get("/api/apartments", (req, res) => {
+app.get("/api/apartments", fetchApartments);
+
+function fetchApartments(req, res) {
   console.log("GET /api/apartments called with query:", req.query);
   const { location, price, bedrooms } = req.query;
 
+  const { query, params } = buildApartmentQuery(location, price, bedrooms);
+
+  db.query(query, params, (err, results) => {
+    if (err) {
+      console.error("Error fetching apartments:", err);
+      return res.status(500).send("Error fetching apartments.");
+    }
+    if (!results || results.length === 0) {
+      console.log("No apartments found.");
+      return res.status(200).json([]);
+    }
+    console.log("Apartments found:", results.length);
+    res.json(results);
+  });
+}
+
+function buildApartmentQuery(location, price, bedrooms) {
   let query = "SELECT * FROM apartments WHERE 1=1";
   const params = [];
 
@@ -47,28 +72,17 @@ app.get("/api/apartments", (req, res) => {
     params.push(bedrooms);
   }
 
-  db.query(query, params, (err, results) => {
-    if (err) {
-      console.error("Error fetching apartments:", err);
-      return res.status(500).send("Error fetching apartments.");
-    }
-    if (!results || results.length === 0) {
-      console.log("No apartments found.");
-      return res.status(200).json([]);
-    }
-    console.log("Apartments found:", results.length);
-    res.json(results);
-  });
+  return { query, params };
+}
+
+// Root endpoint
+app.get("/", (req, res) => {
+  res.send(
+    "Welcome to the NearbyHomes API! Use /api/apartments to fetch data."
+  );
 });
 
 // Start the server
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
-});
-
-// Root route
-app.get("/", (req, res) => {
-  res.send(
-    "Welcome to the NearbyHomes API! Use /api/apartments to fetch data."
-  );
 });

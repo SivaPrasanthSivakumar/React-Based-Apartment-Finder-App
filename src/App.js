@@ -33,29 +33,34 @@ function App() {
     console.log("App component loaded");
   }, []);
 
+  const fetchApartments = async (query) => {
+    const response = await fetch(query);
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    return response.json();
+  };
+
   const searchApartments = async () => {
     try {
-      const response = await fetch(
-        `http://localhost:5000/api/apartments?location=${location}&price=${price}&bedrooms=${bedrooms}`
-      );
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      const data = await response.json();
-      setResults(
-        data.length
-          ? data
-              .map(
-                (apartment) =>
-                  `${apartment.title} - $${apartment.price}, ${apartment.bedrooms} bedrooms`
-              )
-              .join("\n")
-          : "No apartments found."
-      );
+      const query = `http://localhost:5000/api/apartments?location=${location}&price=${price}&bedrooms=${bedrooms}`;
+      const data = await fetchApartments(query);
+      setResults(formatApartmentResults(data));
     } catch (error) {
       console.error("Error fetching apartments:", error);
       setResults("Error fetching apartments. Please try again later.");
     }
+  };
+
+  const formatApartmentResults = (data) => {
+    return data.length
+      ? data
+          .map(
+            (apartment) =>
+              `${apartment.title} - $${apartment.price}, ${apartment.bedrooms} bedrooms`
+          )
+          .join("\n")
+      : "No apartments found.";
   };
 
   const searchNearbyApartments = () => {
@@ -76,17 +81,8 @@ function App() {
     );
   };
 
-  const clearSearchFields = () => {
-    setLocation("");
-    setPrice("");
-    setBedrooms("");
-    setResults("");
-  };
-
-  const clearContactForm = () => {
-    setName("");
-    setEmail("");
-    setMessage("");
+  const clearFields = (setters) => {
+    setters.forEach((setter) => setter(""));
   };
 
   const showHelp = () => {
@@ -97,7 +93,6 @@ function App() {
 
   return (
     <div>
-      {/* Debug element added to confirm rendering */}
       <div
         style={{
           backgroundColor: "#ff0",
@@ -134,7 +129,13 @@ function App() {
           />
           <button onClick={searchApartments}>Search</button>
           <button onClick={searchNearbyApartments}>Near Me</button>
-          <button onClick={clearSearchFields}>Clear</button>
+          <button
+            onClick={() =>
+              clearFields([setLocation, setPrice, setBedrooms, setResults])
+            }
+          >
+            Clear
+          </button>
         </section>
 
         <section id="results">
@@ -162,7 +163,9 @@ function App() {
             placeholder="Message"
           ></textarea>
           <button onClick={sendMessageToAgent}>Send</button>
-          <button onClick={clearContactForm}>Clear</button>
+          <button onClick={() => clearFields([setName, setEmail, setMessage])}>
+            Clear
+          </button>
         </section>
       </main>
     </div>
