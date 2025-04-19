@@ -1,0 +1,45 @@
+{
+  "name": "csit537-project-3",
+  "version": "1.0.0",
+  "description": "This is a full-stack application for finding apartments. The project includes a React frontend, a Node.js backend, and a MySQL database.",
+  "main": "index.js",
+  "scripts": {
+    "start": "concurrently \"node server/index.js\" \"npx react-scripts start\"",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SivaPrasanthSivakumar/CSIT537-Project-3.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SivaPrasanthSivakumar/CSIT537-Project-3/issues"
+  },
+  "homepage": "/",
+  "dependencies": {
+    "body-parser": "^2.2.0",
+    "cors": "^2.8.5",
+    "express": "^5.1.0",
+    "mysql2": "^3.14.0",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "react-scripts": "^5.0.1"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}

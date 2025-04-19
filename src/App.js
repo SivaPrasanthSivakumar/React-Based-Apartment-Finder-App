@@ -1,5 +1,24 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./styles.css";
+
+class ErrorBoundary extends React.Component {
+  state = { hasError: false };
+
+  static getDerivedStateFromError() {
+    return { hasError: true };
+  }
+
+  componentDidCatch(error, info) {
+    console.error("ErrorBoundary caught an error:", error, info);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return <h1>Something went wrong.</h1>;
+    }
+    return this.props.children;
+  }
+}
 
 function App() {
   const [location, setLocation] = useState("");
@@ -10,10 +29,33 @@ function App() {
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
 
-  const searchApartments = () => {
-    setResults(
-      `Searching for apartments in ${location} under $${price} with ${bedrooms} bedrooms...`
-    );
+  useEffect(() => {
+    console.log("App component loaded");
+  }, []);
+
+  const searchApartments = async () => {
+    try {
+      const response = await fetch(
+        `http://localhost:5000/api/apartments?location=${location}&price=${price}&bedrooms=${bedrooms}`
+      );
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const data = await response.json();
+      setResults(
+        data.length
+          ? data
+              .map(
+                (apartment) =>
+                  `${apartment.title} - $${apartment.price}, ${apartment.bedrooms} bedrooms`
+              )
+              .join("\n")
+          : "No apartments found."
+      );
+    } catch (error) {
+      console.error("Error fetching apartments:", error);
+      setResults("Error fetching apartments. Please try again later.");
+    }
   };
 
   const searchNearbyApartments = () => {
@@ -55,12 +97,23 @@ function App() {
 
   return (
     <div>
+      {/* Debug element added to confirm rendering */}
+      <div
+        style={{
+          backgroundColor: "#ff0",
+          padding: "1rem",
+          textAlign: "center",
+        }}
+      >
+        Front End is rendering
+      </div>
       <header>
         <h1>Apartment Finder</h1>
         <button onClick={showHelp}>Help</button>
       </header>
       <main>
         <section id="search">
+          <h2>Search Apartments</h2>
           <input
             type="text"
             value={location}
@@ -84,7 +137,10 @@ function App() {
           <button onClick={clearSearchFields}>Clear</button>
         </section>
 
-        <section id="results">{results}</section>
+        <section id="results">
+          <h2>Results</h2>
+          {results}
+        </section>
 
         <section id="contact-form">
           <h2>Contact Agent</h2>
@@ -113,4 +169,10 @@ function App() {
   );
 }
 
-export default App;
+export default function WrappedApp() {
+  return (
+    <ErrorBoundary>
+      <App />
+    </ErrorBoundary>
+  );
+}
