@@ -65,3 +65,10 @@ app.get("/api/apartments", (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });
+
+// Root route
+app.get("/", (req, res) => {
+  res.send(
+    "Welcome to the NearbyHomes API! Use /api/apartments to fetch data."
+  );
+});

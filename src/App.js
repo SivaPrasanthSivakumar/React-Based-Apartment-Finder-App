@@ -113,6 +113,7 @@ function App() {
       </header>
       <main>
         <section id="search">
+          <h2>Search Apartments</h2>
           <input
             type="text"
             value={location}
@@ -136,7 +137,10 @@ function App() {
           <button onClick={clearSearchFields}>Clear</button>
         </section>
 
-        <section id="results">{results}</section>
+        <section id="results">
+          <h2>Results</h2>
+          {results}
+        </section>
 
         <section id="contact-form">
           <h2>Contact Agent</h2>

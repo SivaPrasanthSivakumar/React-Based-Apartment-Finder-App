@@ -1,6 +1,12 @@
 # Apartment Finder Application
 
-This is a full-stack application for finding apartments. The project includes a React frontend, a Node.js backend, and a MySQL database.
+This is a modern full-stack application for finding apartments. The project includes a React frontend, a Node.js backend, and a MySQL database.
+
+## Features
+
+- Search for apartments by location, price, and number of bedrooms.
+- Find nearby apartments using geolocation.
+- Contact agents directly through the application.
 
 ## Prerequisites
 
