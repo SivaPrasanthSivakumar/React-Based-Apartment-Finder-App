@@ -28,6 +28,7 @@ function App() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     console.log("App component loaded");
@@ -42,13 +43,21 @@ function App() {
   };
 
   const searchApartments = async () => {
+    setLoading(true);
+    setResults("");
     try {
       const query = `http://localhost:5000/api/apartments?location=${location}&price=${price}&bedrooms=${bedrooms}`;
-      const data = await fetchApartments(query);
+      const response = await fetch(query);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const data = await response.json();
       setResults(formatApartmentResults(data));
     } catch (error) {
       console.error("Error fetching apartments:", error);
       setResults("Error fetching apartments. Please try again later.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -57,7 +66,7 @@ function App() {
       ? data
           .map(
             (apartment) =>
-              `${apartment.title} - $${apartment.price}, ${apartment.bedrooms} bedrooms`
+              `${apartment.title} - $${apartment.price}, ${apartment.bedrooms} bedrooms, Address: ${apartment.address}`
           )
           .join("\n")
       : "No apartments found.";
@@ -140,7 +149,8 @@ function App() {
 
         <section id="results">
           <h2>Results</h2>
-          {results}
+          {loading ? <p>Loading...</p> : <pre>{results}</pre>}{" "}
+          {/* Show loading */}
         </section>
 
         <section id="contact-form">

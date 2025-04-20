@@ -11,26 +11,20 @@ app.use(cors());
 app.use(bodyParser.json());
 
 // MySQL connection setup
-const db = setupDatabaseConnection();
+const db = mysql.createConnection({
+  host: "localhost",
+  user: "root",
+  password: "",
+  database: "NearbyHomes",
+});
 
-function setupDatabaseConnection() {
-  const connection = mysql.createConnection({
-    host: "localhost",
-    user: "root",
-    password: "",
-    database: "NearbyHomes",
-  });
-
-  connection.connect((err) => {
-    if (err) {
-      console.error("Error connecting to the database:", err);
-      process.exit(1);
-    }
-    console.log("Connected to the MySQL database.");
-  });
-
-  return connection;
-}
+db.connect((err) => {
+  if (err) {
+    console.error("Error connecting to the database:", err);
+    process.exit(1);
+  }
+  console.log("Connected to the MySQL database.");
+});
 
 // API endpoint to fetch apartments
 app.get("/api/apartments", fetchApartments);
@@ -40,6 +34,7 @@ function fetchApartments(req, res) {
   const { location, price, bedrooms } = req.query;
 
   const { query, params } = buildApartmentQuery(location, price, bedrooms);
+  console.log("SQL Query:", query, "Params:", params);
 
   db.query(query, params, (err, results) => {
     if (err) {
