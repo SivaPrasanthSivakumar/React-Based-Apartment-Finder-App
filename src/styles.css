@@ -43,6 +43,27 @@ header button:hover {
   transform: scale(1.05);
 }
 
+nav {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  background-color: #4caf50;
+  padding: 1rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+nav a {
+  color: white;
+  text-decoration: none;
+  font-size: 1.2rem;
+  font-weight: bold;
+  transition: color 0.3s ease;
+}
+
+nav a:hover {
+  color: #ffeb3b;
+}
+
 main {
   padding: 2rem;
   max-width: 800px;
