@@ -11,6 +11,11 @@ export default function SearchApartments() {
   const handleInputChange = (setter) => (e) => setter(e.target.value);
 
   const searchApartments = async () => {
+    if (!location.trim() && !price.trim() && !bedrooms.trim()) {
+      alert("Please provide at least one search criterion.");
+      return;
+    }
+
     setLoading(true);
     setResults("");
     try {
