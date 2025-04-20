@@ -75,10 +75,24 @@ export function ContactAgent() {
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
 
-  const sendMessageToAgent = () => {
-    alert(
-      `Message sent to agent:\nName: ${name}\nEmail: ${email}\nMessage: ${message}`
-    );
+  const handleInputChange = (setter) => (e) => setter(e.target.value);
+
+  const sendMessageToAgent = async () => {
+    try {
+      const response = await sendContactMessage({ name, email, message });
+      if (!response.ok) throw new Error("Failed to send message.");
+      alert("Message sent successfully!");
+      clearForm();
+    } catch (error) {
+      console.error("Error sending message:", error);
+      alert("Failed to send message. Please try again.");
+    }
+  };
+
+  const clearForm = () => {
+    setName("");
+    setEmail("");
+    setMessage("");
   };
 
   return (
@@ -88,25 +102,31 @@ export function ContactAgent() {
         <input
           type="text"
           value={name}
-          onChange={(e) => setName(e.target.value)}
+          onChange={handleInputChange(setName)}
           placeholder="Your Name"
         />
         <input
           type="email"
           value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          onChange={handleInputChange(setEmail)}
           placeholder="Your Email"
         />
         <textarea
           value={message}
-          onChange={(e) => setMessage(e.target.value)}
+          onChange={handleInputChange(setMessage)}
           placeholder="Message"
         ></textarea>
         <button onClick={sendMessageToAgent}>Send</button>
-        <button onClick={() => setName("") || setEmail("") || setMessage("")}>
-          Clear
-        </button>
+        <button onClick={clearForm}>Clear</button>
       </section>
     </main>
   );
+}
+
+async function sendContactMessage(data) {
+  return await fetch("http://localhost:5000/api/contact", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  });
 }

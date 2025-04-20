@@ -7,29 +7,50 @@ const app = express();
 const PORT = 5000;
 
 // Middleware
-app.use(cors());
-app.use(bodyParser.json());
+setupMiddleware(app);
 
 // MySQL connection setup
-const db = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: "",
-  database: "NearbyHomes",
-});
+const db = setupDatabaseConnection();
 
-db.connect((err) => {
-  if (err) {
-    console.error("Error connecting to the database:", err);
-    process.exit(1);
-  }
-  console.log("Connected to the MySQL database.");
-});
+// API endpoints
+setupApiEndpoints(app, db);
 
-// API endpoint to fetch apartments
-app.get("/api/apartments", fetchApartments);
+// Root endpoint
+setupRootEndpoint(app);
 
-function fetchApartments(req, res) {
+// Start the server
+startServer(app, PORT);
+
+function setupMiddleware(app) {
+  app.use(cors());
+  app.use(bodyParser.json());
+}
+
+function setupDatabaseConnection() {
+  const db = mysql.createConnection({
+    host: "localhost",
+    user: "root",
+    password: "",
+    database: "NearbyHomes",
+  });
+
+  db.connect((err) => {
+    if (err) {
+      console.error("Error connecting to the database:", err);
+      process.exit(1);
+    }
+    console.log("Connected to the MySQL database.");
+  });
+
+  return db;
+}
+
+function setupApiEndpoints(app, db) {
+  app.get("/api/apartments", (req, res) => fetchApartments(req, res, db));
+  app.post("/api/contact", (req, res) => saveContactMessage(req, res, db));
+}
+
+function fetchApartments(req, res, db) {
   console.log("GET /api/apartments called with query:", req.query);
   const { location, price, bedrooms } = req.query;
 
@@ -41,12 +62,7 @@ function fetchApartments(req, res) {
       console.error("Error fetching apartments:", err);
       return res.status(500).send("Error fetching apartments.");
     }
-    if (!results || results.length === 0) {
-      console.log("No apartments found.");
-      return res.status(200).json([]);
-    }
-    console.log("Apartments found:", results.length);
-    res.json(results);
+    res.status(200).json(results.length ? results : []);
   });
 }
 
@@ -70,14 +86,34 @@ function buildApartmentQuery(location, price, bedrooms) {
   return { query, params };
 }
 
-// Root endpoint
-app.get("/", (req, res) => {
-  res.send(
-    "Welcome to the NearbyHomes API! Use /api/apartments to fetch data."
-  );
-});
+function saveContactMessage(req, res, db) {
+  const { name, email, message } = req.body;
 
-// Start the server
-app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
-});
+  if (!name || !email || !message) {
+    return res.status(400).send("All fields are required.");
+  }
+
+  const query =
+    "INSERT INTO contact_messages (name, email, message) VALUES (?, ?, ?)";
+  db.query(query, [name, email, message], (err) => {
+    if (err) {
+      console.error("Error saving contact message:", err);
+      return res.status(500).send("Error saving contact message.");
+    }
+    res.status(201).send("Message saved successfully.");
+  });
+}
+
+function setupRootEndpoint(app) {
+  app.get("/", (req, res) => {
+    res.send(
+      "Welcome to the NearbyHomes API! Use /api/apartments to fetch data."
+    );
+  });
+}
+
+function startServer(app, port) {
+  app.listen(port, () => {
+    console.log(`Server is running on http://localhost:${port}`);
+  });
+}

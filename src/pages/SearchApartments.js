@@ -8,26 +8,14 @@ export default function SearchApartments() {
   const [results, setResults] = useState("");
   const [loading, setLoading] = useState(false);
 
+  const handleInputChange = (setter) => (e) => setter(e.target.value);
+
   const searchApartments = async () => {
     setLoading(true);
     setResults("");
     try {
-      const query = `http://localhost:5000/api/apartments?location=${location}&price=${price}&bedrooms=${bedrooms}`;
-      const response = await fetch(query);
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      const data = await response.json();
-      setResults(
-        data.length
-          ? data
-              .map(
-                (apartment) =>
-                  `${apartment.title} - $${apartment.price}, ${apartment.bedrooms} bedrooms, Address: ${apartment.address}`
-              )
-              .join("\n")
-          : "No apartments found."
-      );
+      const data = await fetchApartments({ location, price, bedrooms });
+      setResults(formatResults(data));
     } catch (error) {
       console.error("Error fetching apartments:", error);
       setResults("Error fetching apartments. Please try again later.");
@@ -36,6 +24,8 @@ export default function SearchApartments() {
     }
   };
 
+  const clearResults = () => setResults("");
+
   return (
     <main>
       <section id="search">
@@ -43,23 +33,23 @@ export default function SearchApartments() {
         <input
           type="text"
           value={location}
-          onChange={(e) => setLocation(e.target.value)}
+          onChange={handleInputChange(setLocation)}
           placeholder="Enter location"
         />
         <input
           type="number"
           value={price}
-          onChange={(e) => setPrice(e.target.value)}
+          onChange={handleInputChange(setPrice)}
           placeholder="Max price"
         />
         <input
           type="number"
           value={bedrooms}
-          onChange={(e) => setBedrooms(e.target.value)}
+          onChange={handleInputChange(setBedrooms)}
           placeholder="Bedrooms"
         />
         <button onClick={searchApartments}>Search</button>
-        <button onClick={() => setResults("")}>Clear</button>
+        <button onClick={clearResults}>Clear</button>
       </section>
 
       <section id="results">
@@ -68,4 +58,22 @@ export default function SearchApartments() {
       </section>
     </main>
   );
+}
+
+async function fetchApartments({ location, price, bedrooms }) {
+  const query = `http://localhost:5000/api/apartments?location=${location}&price=${price}&bedrooms=${bedrooms}`;
+  const response = await fetch(query);
+  if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+  return await response.json();
+}
+
+function formatResults(data) {
+  return data.length
+    ? data
+        .map(
+          (apartment) =>
+            `${apartment.title} - $${apartment.price}, ${apartment.bedrooms} bedrooms, Address: ${apartment.address}`
+        )
+        .join("\n")
+    : "No apartments found.";
 }
