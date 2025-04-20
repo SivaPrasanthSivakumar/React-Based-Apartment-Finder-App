@@ -1,6 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
+import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import "./styles.css";
-
+import SearchApartments from "./pages/SearchApartments";
+import { ContactAgent } from "./pages/ContactAgent";
 class ErrorBoundary extends React.Component {
   state = { hasError: false };
 
@@ -21,164 +23,30 @@ class ErrorBoundary extends React.Component {
 }
 
 function App() {
-  const [location, setLocation] = useState("");
-  const [price, setPrice] = useState("");
-  const [bedrooms, setBedrooms] = useState("");
-  const [results, setResults] = useState("");
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [message, setMessage] = useState("");
-  const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    console.log("App component loaded");
-  }, []);
-
-  const fetchApartments = async (query) => {
-    const response = await fetch(query);
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-    return response.json();
-  };
-
-  const searchApartments = async () => {
-    setLoading(true);
-    setResults("");
-    try {
-      const query = `http://localhost:5000/api/apartments?location=${location}&price=${price}&bedrooms=${bedrooms}`;
-      const response = await fetch(query);
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      const data = await response.json();
-      setResults(formatApartmentResults(data));
-    } catch (error) {
-      console.error("Error fetching apartments:", error);
-      setResults("Error fetching apartments. Please try again later.");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const formatApartmentResults = (data) => {
-    return data.length
-      ? data
-          .map(
-            (apartment) =>
-              `${apartment.title} - $${apartment.price}, ${apartment.bedrooms} bedrooms, Address: ${apartment.address}`
-          )
-          .join("\n")
-      : "No apartments found.";
-  };
-
-  const searchNearbyApartments = () => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(({ coords }) => {
-        setResults(
-          `Searching for apartments near (${coords.latitude}, ${coords.longitude})...`
-        );
-      });
-    } else {
-      alert("Geolocation is not supported by your browser.");
-    }
-  };
-
-  const sendMessageToAgent = () => {
-    alert(
-      `Message sent to agent:\nName: ${name}\nEmail: ${email}\nMessage: ${message}`
-    );
-  };
-
-  const clearFields = (setters) => {
-    setters.forEach((setter) => setter(""));
-  };
-
-  const showHelp = () => {
-    alert(
-      "To search for apartments, fill in the location, price, and bedrooms, then click 'Search'. Use 'Near Me' to find nearby apartments. To contact an agent, fill in your details and click 'Send'."
-    );
-  };
-
   return (
-    <div>
-      <div
-        style={{
-          backgroundColor: "#ff0",
-          padding: "1rem",
-          textAlign: "center",
-        }}
-      >
-        Front End is rendering
-      </div>
+    <Router>
       <header>
         <h1>Apartment Finder</h1>
-        <button onClick={showHelp}>Help</button>
+        <nav>
+          <Link to="/">Home</Link>
+          <Link to="/search">Search Apartments</Link>
+          <Link to="/contact">Contact Agent</Link>
+        </nav>
       </header>
-      <main>
-        <section id="search">
-          <h2>Search Apartments</h2>
-          <input
-            type="text"
-            value={location}
-            onChange={(e) => setLocation(e.target.value)}
-            placeholder="Enter location"
-          />
-          <input
-            type="number"
-            value={price}
-            onChange={(e) => setPrice(e.target.value)}
-            placeholder="Max price"
-          />
-          <input
-            type="number"
-            value={bedrooms}
-            onChange={(e) => setBedrooms(e.target.value)}
-            placeholder="Bedrooms"
-          />
-          <button onClick={searchApartments}>Search</button>
-          <button onClick={searchNearbyApartments}>Near Me</button>
-          <button
-            onClick={() =>
-              clearFields([setLocation, setPrice, setBedrooms, setResults])
-            }
-          >
-            Clear
-          </button>
-        </section>
-
-        <section id="results">
-          <h2>Results</h2>
-          {loading ? <p>Loading...</p> : <pre>{results}</pre>}{" "}
-          {/* Show loading */}
-        </section>
-
-        <section id="contact-form">
-          <h2>Contact Agent</h2>
-          <input
-            type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            placeholder="Your Name"
-          />
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="Your Email"
-          />
-          <textarea
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-            placeholder="Message"
-          ></textarea>
-          <button onClick={sendMessageToAgent}>Send</button>
-          <button onClick={() => clearFields([setName, setEmail, setMessage])}>
-            Clear
-          </button>
-        </section>
-      </main>
-    </div>
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <div style={{ textAlign: "center", padding: "2rem" }}>
+              <h2>Welcome to Apartment Finder</h2>
+              <p>Use the navigation to explore the app.</p>
+            </div>
+          }
+        />
+        <Route path="/search" element={<SearchApartments />} />
+        <Route path="/contact" element={<ContactAgent />} />
+      </Routes>
+    </Router>
   );
 }
 
