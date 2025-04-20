@@ -26,6 +26,14 @@ CREATE TABLE IF NOT EXISTS apartments (
     FOREIGN KEY (agent_id) REFERENCES users(id)
 );
 
+-- Add a table for storing contact messages
+CREATE TABLE IF NOT EXISTS contact_messages (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    email VARCHAR(100) NOT NULL,
+    message TEXT NOT NULL,
+    submitted_at DATETIME DEFAULT NOW()
+);
 
 -- Insert sample users
 INSERT INTO users (first_name, last_name, email, password, role)
