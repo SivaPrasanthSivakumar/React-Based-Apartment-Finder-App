@@ -5,8 +5,8 @@ This is a modern full-stack application for finding apartments. The project incl
 ## Features
 
 - Search for apartments by location, price, and number of bedrooms.
-- Find nearby apartments using geolocation.
 - Contact agents directly through the application.
+- Responsive design for mobile and desktop users.
 
 ## Prerequisites
 
@@ -23,7 +23,7 @@ Before running the project, ensure you have the following installed:
 Clone the project to your local machine:
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/SivaPrasanthSivakumar/CSIT537-Project-3.git
 cd CSIT537-Project-3
 ```
 
