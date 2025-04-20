@@ -23,7 +23,7 @@
   "bugs": {
     "url": "https://github.com/SivaPrasanthSivakumar/CSIT537-Project-3/issues"
   },
-  "homepage": "https://github.com/SivaPrasanthSivakumar/CSIT537-Project-3#readme",
+  "homepage": "/",
   "dependencies": {
     "body-parser": "^2.2.0",
     "cors": "^2.8.5",
