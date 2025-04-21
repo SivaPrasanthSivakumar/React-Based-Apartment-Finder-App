@@ -1,6 +1,37 @@
 import React, { useState } from "react";
 import "../styles.css";
 
+export function validateSearchCriteria(location, price, bedrooms) {
+  if (!location.trim() && !price.trim() && !bedrooms.trim()) {
+    alert("Please provide at least one search criterion.");
+    return false;
+  }
+  return true;
+}
+
+export async function fetchApartments({ location, price, bedrooms }) {
+  const query = `http://localhost:5000/api/apartments?location=${location}&price=${price}&bedrooms=${bedrooms}`;
+  const response = await fetch(query);
+  if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+  return await response.json();
+}
+
+export function formatResults(data) {
+  return data.length
+    ? data
+        .map(
+          (apartment) =>
+            `${apartment.title} - $${apartment.price}, ${apartment.bedrooms} bedrooms, Address: ${apartment.address}`
+        )
+        .join("\n")
+    : "No apartments found.";
+}
+
+export function handleSearchError(error) {
+  console.error("Error fetching apartments:", error);
+  alert("Error fetching apartments. Please try again later.");
+}
+
 export default function SearchApartments() {
   const [location, setLocation] = useState("");
   const [price, setPrice] = useState("");
@@ -88,35 +119,4 @@ function SearchResults({ loading, results }) {
       {loading ? <p>Loading...</p> : <pre>{results}</pre>}
     </section>
   );
-}
-
-function validateSearchCriteria(location, price, bedrooms) {
-  if (!location.trim() && !price.trim() && !bedrooms.trim()) {
-    alert("Please provide at least one search criterion.");
-    return false;
-  }
-  return true;
-}
-
-async function fetchApartments({ location, price, bedrooms }) {
-  const query = `http://localhost:5000/api/apartments?location=${location}&price=${price}&bedrooms=${bedrooms}`;
-  const response = await fetch(query);
-  if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-  return await response.json();
-}
-
-function formatResults(data) {
-  return data.length
-    ? data
-        .map(
-          (apartment) =>
-            `${apartment.title} - $${apartment.price}, ${apartment.bedrooms} bedrooms, Address: ${apartment.address}`
-        )
-        .join("\n")
-    : "No apartments found.";
-}
-
-function handleSearchError(error) {
-  console.error("Error fetching apartments:", error);
-  alert("Error fetching apartments. Please try again later.");
 }

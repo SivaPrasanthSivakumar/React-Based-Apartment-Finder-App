@@ -4,30 +4,71 @@ import "./styles.css";
 import SearchApartments from "./pages/SearchApartments";
 import { ContactAgent } from "./pages/ContactAgent";
 import Contribute from "./pages/Contribute";
+import LoginSignup from "./pages/LoginSignup";
+import ProtectedRoute from "./ProtectedRoute";
 
 function App() {
   return (
     <Router>
       <Header />
       <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/search" element={<SearchApartments />} />
-        <Route path="/contact" element={<ContactAgent />} />
-        <Route path="/contribute" element={<Contribute />} />
+        <Route path="/login" element={<LoginSignup />} />
+        <Route
+          path="/"
+          element={
+            <ProtectedRoute>
+              <HomePage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/search"
+          element={
+            <ProtectedRoute>
+              <SearchApartments />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/contact"
+          element={
+            <ProtectedRoute>
+              <ContactAgent />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/contribute"
+          element={
+            <ProtectedRoute>
+              <Contribute />
+            </ProtectedRoute>
+          }
+        />
       </Routes>
     </Router>
   );
 }
 
 function Header() {
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    window.location.href = "/login";
+  };
+
   return (
     <header>
       <h1>Apartment Finder</h1>
       <nav>
-        <Link to="/">Home</Link>
-        <Link to="/search">Search Apartments</Link>
-        <Link to="/contribute">Contribute</Link>
-        <Link to="/contact">Contact Agent</Link>
+        <div className="nav-links">
+          <Link to="/">Home</Link>
+          <Link to="/search">Search Apartments</Link>
+          <Link to="/contribute">Contribute</Link>
+          <Link to="/contact">Contact Agent</Link>
+        </div>
+        <button className="logout-button" onClick={handleLogout}>
+          Logout
+        </button>
       </nav>
     </header>
   );

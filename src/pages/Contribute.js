@@ -1,5 +1,10 @@
 import React, { useState } from "react";
 import "../styles.css";
+import {
+  validateFormData,
+  submitApartment,
+  handleSubmissionError,
+} from "../utils/contributeUtils";
 
 export default function Contribute() {
   const [formData, setFormData] = useState(initialFormData());
@@ -107,62 +112,4 @@ function initialFormData() {
     latitude: "",
     longitude: "",
   };
-}
-
-function validateFormData({
-  title,
-  address,
-  price,
-  bedrooms,
-  latitude,
-  longitude,
-}) {
-  if (
-    !title.trim() ||
-    !address.trim() ||
-    !price.trim() ||
-    !bedrooms.trim() ||
-    !latitude.trim() ||
-    !longitude.trim()
-  ) {
-    return "All fields are required.";
-  }
-  if (!/^\d+(\.\d{1,2})?$/.test(price)) {
-    return "Price must be a valid number (e.g., 1200.00).";
-  }
-  if (!/^\d+$/.test(bedrooms)) {
-    return "Bedrooms must be a valid whole number.";
-  }
-  if (address.length < 10) {
-    return "Address must be at least 10 characters long.";
-  }
-  if (
-    !/^[-+]?\d{1,2}(\.\d+)?$/.test(latitude) ||
-    latitude < -90 ||
-    latitude > 90
-  ) {
-    return "Latitude must be a valid number between -90 and 90.";
-  }
-  if (
-    !/^[-+]?\d{1,3}(\.\d+)?$/.test(longitude) ||
-    longitude < -180 ||
-    longitude > 180
-  ) {
-    return "Longitude must be a valid number between -180 and 180.";
-  }
-  return null;
-}
-
-async function submitApartment(data) {
-  const response = await fetch("http://localhost:5000/api/apartments", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(data),
-  });
-  if (!response.ok) throw new Error(await response.text());
-}
-
-function handleSubmissionError(error) {
-  console.error("Error adding apartment:", error);
-  alert(error.message || "Failed to add apartment. Please try again.");
 }
