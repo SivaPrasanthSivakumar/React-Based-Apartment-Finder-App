@@ -5,7 +5,7 @@
   --background-color: #f4f4f9;
   --text-color: #333;
   --header-gradient: linear-gradient(90deg, #4caf50, #03a9f4);
-  --base-spacing: 1rem; 
+  --base-spacing: 1rem;
 }
 
 body {

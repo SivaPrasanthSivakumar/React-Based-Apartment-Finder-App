@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import "./styles.css";
 import SearchApartments from "./pages/SearchApartments";
 import { ContactAgent } from "./pages/ContactAgent";
+import Contribute from "./pages/Contribute";
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="/search" element={<SearchApartments />} />
         <Route path="/contact" element={<ContactAgent />} />
+        <Route path="/contribute" element={<Contribute />} />
       </Routes>
     </Router>
   );
@@ -24,6 +26,7 @@ function Header() {
       <nav>
         <Link to="/">Home</Link>
         <Link to="/search">Search Apartments</Link>
+        <Link to="/contribute">Contribute</Link>
         <Link to="/contact">Contact Agent</Link>
       </nav>
     </header>

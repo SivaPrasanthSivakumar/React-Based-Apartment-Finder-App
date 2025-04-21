@@ -11,10 +11,7 @@ export default function SearchApartments() {
   const handleInputChange = (setter) => (e) => setter(e.target.value);
 
   const searchApartments = async () => {
-    if (!location.trim() && !price.trim() && !bedrooms.trim()) {
-      alert("Please provide at least one search criterion.");
-      return;
-    }
+    if (!validateSearchCriteria(location, price, bedrooms)) return;
 
     setLoading(true);
     setResults("");
@@ -22,8 +19,7 @@ export default function SearchApartments() {
       const data = await fetchApartments({ location, price, bedrooms });
       setResults(formatResults(data));
     } catch (error) {
-      console.error("Error fetching apartments:", error);
-      setResults("Error fetching apartments. Please try again later.");
+      handleSearchError(error);
     } finally {
       setLoading(false);
     }
@@ -33,36 +29,73 @@ export default function SearchApartments() {
 
   return (
     <main>
-      <section id="search">
-        <h2>Search Apartments</h2>
-        <input
-          type="text"
-          value={location}
-          onChange={handleInputChange(setLocation)}
-          placeholder="Enter location"
-        />
-        <input
-          type="number"
-          value={price}
-          onChange={handleInputChange(setPrice)}
-          placeholder="Max price"
-        />
-        <input
-          type="number"
-          value={bedrooms}
-          onChange={handleInputChange(setBedrooms)}
-          placeholder="Bedrooms"
-        />
-        <button onClick={searchApartments}>Search</button>
-        <button onClick={clearResults}>Clear</button>
-      </section>
-
-      <section id="results">
-        <h2>Results</h2>
-        {loading ? <p>Loading...</p> : <pre>{results}</pre>}
-      </section>
+      <SearchForm
+        location={location}
+        price={price}
+        bedrooms={bedrooms}
+        onLocationChange={handleInputChange(setLocation)}
+        onPriceChange={handleInputChange(setPrice)}
+        onBedroomsChange={handleInputChange(setBedrooms)}
+        onSearch={searchApartments}
+        onClear={clearResults}
+      />
+      <SearchResults loading={loading} results={results} />
     </main>
   );
+}
+
+function SearchForm({
+  location,
+  price,
+  bedrooms,
+  onLocationChange,
+  onPriceChange,
+  onBedroomsChange,
+  onSearch,
+  onClear,
+}) {
+  return (
+    <section id="search">
+      <h2>Search Apartments</h2>
+      <input
+        type="text"
+        value={location}
+        onChange={onLocationChange}
+        placeholder="Enter location"
+      />
+      <input
+        type="number"
+        value={price}
+        onChange={onPriceChange}
+        placeholder="Max price"
+      />
+      <input
+        type="number"
+        value={bedrooms}
+        onChange={onBedroomsChange}
+        placeholder="Bedrooms"
+      />
+      <button onClick={onSearch}>Search</button>
+      <button onClick={onClear}>Clear</button>
+    </section>
+  );
+}
+
+function SearchResults({ loading, results }) {
+  return (
+    <section id="results">
+      <h2>Results</h2>
+      {loading ? <p>Loading...</p> : <pre>{results}</pre>}
+    </section>
+  );
+}
+
+function validateSearchCriteria(location, price, bedrooms) {
+  if (!location.trim() && !price.trim() && !bedrooms.trim()) {
+    alert("Please provide at least one search criterion.");
+    return false;
+  }
+  return true;
 }
 
 async function fetchApartments({ location, price, bedrooms }) {
@@ -81,4 +114,9 @@ function formatResults(data) {
         )
         .join("\n")
     : "No apartments found.";
+}
+
+function handleSearchError(error) {
+  console.error("Error fetching apartments:", error);
+  alert("Error fetching apartments. Please try again later.");
 }
