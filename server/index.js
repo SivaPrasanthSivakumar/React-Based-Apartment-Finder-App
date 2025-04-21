@@ -47,6 +47,7 @@ function setupDatabaseConnection() {
 
 function setupApiEndpoints(app, db) {
   app.get("/api/apartments", (req, res) => fetchApartments(req, res, db));
+  app.post("/api/apartments", (req, res) => addApartment(req, res, db));
   app.post("/api/contact", (req, res) => saveContactMessage(req, res, db));
 }
 
@@ -84,6 +85,36 @@ function buildApartmentQuery(location, price, bedrooms) {
   }
 
   return { query, params };
+}
+
+function addApartment(req, res, db) {
+  console.log("addApartment called with data:", req.body); 
+  const { title, address, price, bedrooms, latitude, longitude } = req.body;
+
+  if (!title || !address || !price || !bedrooms || !latitude || !longitude) {
+    return res.status(400).send("All fields are required.");
+  }
+
+  if (latitude < -90 || latitude > 90) {
+    return res.status(400).send("Latitude must be between -90 and 90.");
+  }
+  if (longitude < -180 || longitude > 180) {
+    return res.status(400).send("Longitude must be between -180 and 180.");
+  }
+
+  const query =
+    "INSERT INTO apartments (agent_id, title, address, price, bedrooms, latitude, longitude) VALUES (?, ?, ?, ?, ?, ?, ?)";
+  db.query(
+    query,
+    [1, title, address, price, bedrooms, latitude, longitude],
+    (err) => {
+      if (err) {
+        console.error("Error adding apartment:", err);
+        return res.status(500).send(`Error adding apartment: ${err.message}`);
+      }
+      res.status(201).send("Apartment added successfully.");
+    }
+  );
 }
 
 function saveContactMessage(req, res, db) {
