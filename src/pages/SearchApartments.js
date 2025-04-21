@@ -100,6 +100,7 @@ function validateSearchCriteria(location, price, bedrooms) {
 
 async function fetchApartments({ location, price, bedrooms }) {
   const query = `http://localhost:5000/api/apartments?location=${location}&price=${price}&bedrooms=${bedrooms}`;
+  console.log("Fetching apartments with query:", query); // Log the query URL
   const response = await fetch(query);
   if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
   return await response.json();

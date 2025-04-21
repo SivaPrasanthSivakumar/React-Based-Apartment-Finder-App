@@ -2,15 +2,34 @@ const express = require("express");
 const mysql = require("mysql2");
 const cors = require("cors");
 const bodyParser = require("body-parser");
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
 const app = express();
 const PORT = 5000;
 
+// Secret key for JWT
+const JWT_SECRET = "your_jwt_secret_key";
+
 // Middleware
 setupMiddleware(app);
+app.use(cors());
 
 // MySQL connection setup
-const db = setupDatabaseConnection();
+const db = mysql.createConnection({
+  host: "localhost",
+  user: "root",
+  password: "",
+  database: "NearbyHomes",
+});
+
+db.connect((err) => {
+  if (err) {
+    console.error("Error connecting to the database:", err);
+    process.exit(1);
+  }
+  console.log("Connected to the MySQL database.");
+});
 
 // API endpoints
 setupApiEndpoints(app, db);
@@ -26,29 +45,27 @@ function setupMiddleware(app) {
   app.use(bodyParser.json());
 }
 
-function setupDatabaseConnection() {
-  const db = mysql.createConnection({
-    host: "localhost",
-    user: "root",
-    password: "",
-    database: "NearbyHomes",
-  });
-
-  db.connect((err) => {
-    if (err) {
-      console.error("Error connecting to the database:", err);
-      process.exit(1);
-    }
-    console.log("Connected to the MySQL database.");
-  });
-
-  return db;
-}
-
 function setupApiEndpoints(app, db) {
-  app.get("/api/apartments", (req, res) => fetchApartments(req, res, db));
-  app.post("/api/apartments", (req, res) => addApartment(req, res, db));
-  app.post("/api/contact", (req, res) => saveContactMessage(req, res, db));
+  app.post("/api/login", (req, res) => userLogin(req, res, db));
+
+  app.get("/api/apartments", (req, res) => {
+    console.log("GET /api/apartments called with query:", req.query);
+
+    const { location, price, bedrooms } = req.query;
+    const { query, params } = buildApartmentQuery(location, price, bedrooms);
+
+    console.log("SQL Query:", query, "Params:", params);
+
+    db.query(query, params, (err, results) => {
+      if (err) {
+        console.error("Error fetching apartments:", err);
+        return res.status(500).send("Error fetching apartments.");
+      }
+
+      console.log("Query Results:", results);
+      res.status(200).json(results.length ? results : []);
+    });
+  });
 }
 
 function fetchApartments(req, res, db) {
@@ -63,6 +80,7 @@ function fetchApartments(req, res, db) {
       console.error("Error fetching apartments:", err);
       return res.status(500).send("Error fetching apartments.");
     }
+    console.log("Query Results:", results);
     res.status(200).json(results.length ? results : []);
   });
 }
@@ -88,7 +106,7 @@ function buildApartmentQuery(location, price, bedrooms) {
 }
 
 function addApartment(req, res, db) {
-  console.log("addApartment called with data:", req.body); 
+  console.log("addApartment called with data:", req.body);
   const { title, address, price, bedrooms, latitude, longitude } = req.body;
 
   if (!title || !address || !price || !bedrooms || !latitude || !longitude) {
@@ -133,6 +151,81 @@ function saveContactMessage(req, res, db) {
     }
     res.status(201).send("Message saved successfully.");
   });
+}
+
+async function userSignup(req, res, db) {
+  const { first_name, last_name, email, password } = req.body;
+
+  if (!first_name || !last_name || !email || !password) {
+    return res.status(400).send("All fields are required.");
+  }
+
+  try {
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const query =
+      "INSERT INTO users (first_name, last_name, email, password, role) VALUES (?, ?, ?, ?, 'client')";
+
+    db.query(query, [first_name, last_name, email, hashedPassword], (err) => {
+      if (err) {
+        if (err.code === "ER_DUP_ENTRY") {
+          return res.status(400).send("Email already exists.");
+        }
+        console.error("Error during signup:", err);
+        return res.status(500).send("Error during signup.");
+      }
+      res.status(201).send("User registered successfully.");
+    });
+  } catch (err) {
+    console.error("Error hashing password:", err);
+    res.status(500).send("Error during signup.");
+  }
+}
+
+function userLogin(req, res, db) {
+  const { email, password } = req.body;
+
+  if (!email || !password) {
+    return res.status(400).send("Email and password are required.");
+  }
+
+  const query = "SELECT * FROM users WHERE email = ?";
+  db.query(query, [email], async (err, results) => {
+    if (err) {
+      console.error("Error during login:", err);
+      return res.status(500).send("Error during login.");
+    }
+
+    console.log("Email:", email);
+    console.log("Password:", password);
+    console.log("Query Results:", results);
+
+    if (results.length === 0) {
+      return res.status(401).send("Invalid email or password.");
+    }
+
+    const user = results[0]; // Define the user variable here
+
+    console.log("Hashed Password from DB:", user.password); // Log after user is defined
+
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+    console.log("Password Valid:", isPasswordValid);
+
+    if (!isPasswordValid) {
+      return res.status(401).send("Invalid email or password.");
+    }
+
+    const token = jwt.sign(
+      { id: user.id, email: user.email, role: user.role },
+      process.env.JWT_SECRET || "default_secret",
+      { expiresIn: "1h" }
+    );
+    res.status(200).json({ token });
+  });
+}
+
+function userLogout(req, res) {
+  // For stateless JWT, logout can be handled on the client side by deleting the token.
+  res.status(200).send("Logged out successfully.");
 }
 
 function setupRootEndpoint(app) {
