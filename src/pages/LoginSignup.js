@@ -79,7 +79,10 @@ const LoginSignup = () => {
         />
         <button type="submit">{isLogin ? "Login" : "Sign Up"}</button>
       </form>
-      <button onClick={() => setIsLogin(!isLogin)}>
+      <button
+        className="link-style-button"
+        onClick={() => setIsLogin(!isLogin)}
+      >
         {isLogin ? "Switch to Sign Up" : "Switch to Login"}
       </button>
     </div>
