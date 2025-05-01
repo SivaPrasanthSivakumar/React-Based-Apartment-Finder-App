@@ -5,8 +5,11 @@ This is a modern full-stack application for finding apartments. The project incl
 ## Features
 
 - Search for apartments by location, price, and number of bedrooms.
+- View apartment locations on an interactive map.
 - Contact agents directly through the application.
+- Contribute new apartment listings.
 - Responsive design for mobile and desktop users.
+- User authentication with login and signup functionality.
 
 ## Prerequisites
 
@@ -69,6 +72,7 @@ cd CSIT537-Project-3
 ### Backend Commands
 
 - `node server/index.js`: Start the backend server.
+- `npm run start:dev`: Start the backend server with live reload using `nodemon`.
 
 ### Frontend Commands
 
@@ -80,12 +84,15 @@ cd CSIT537-Project-3
 
 1. Open the frontend in your browser at `http://localhost:3000`.
 2. Use the search form to find apartments based on location, price, and bedrooms.
-3. The results will be fetched from the backend and displayed on the page.
+3. View apartment locations on the map.
+4. Contribute new apartment listings through the "Contribute" page.
+5. Contact agents through the "Contact Agent" page.
 
 ## Troubleshooting
 
 - **Database Connection Issues**: Ensure the MySQL server is running and the credentials in `server/index.js` are correct.
 - **Port Conflicts**: If `http://localhost:3000` or `http://localhost:5000` is already in use, update the ports in the respective configurations.
+- **Environment Variables**: Ensure the `.env` file is properly configured with necessary environment variables like `JWT_SECRET`.
 
 ## License
 
