@@ -191,6 +191,10 @@ link-style-button {
   box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
 }
 
+#map-view {
+  margin-top: 2rem;
+}
+
 .login-signup-container {
   max-width: 400px;
   margin: 50px auto;
@@ -206,6 +210,12 @@ link-style-button {
   margin-bottom: 20px;
   font-size: 1.5rem;
   color: var(--primary-color);
+}
+
+img,
+video {
+  max-width: 100%;
+  height: auto;
 }
 
 @media (max-width: 768px) {
