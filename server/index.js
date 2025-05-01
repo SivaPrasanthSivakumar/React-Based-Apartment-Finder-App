@@ -44,6 +44,7 @@ function setupMiddleware(app) {
 
 function setupApiEndpoints(app, db) {
   app.post("/api/login", (req, res) => userLogin(req, res, db));
+  app.post("/api/signup", (req, res) => userSignup(req, res, db));
 
   app.get("/api/apartments", (req, res) => {
     console.log("GET /api/apartments called with query:", req.query);

@@ -17,17 +17,17 @@ const LoginSignup = () => {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault(); 
+    e.preventDefault();
     const endpoint = isLogin
-      ? "http://localhost:5000/api/login"
-      : "http://localhost:5000/api/signup";
+      ? "http://localhost:5000/api/login" 
+      : "http://localhost:5000/api/signup"; 
 
     try {
       const response = await axios.post(endpoint, formData);
       if (isLogin) {
         localStorage.setItem("token", response.data.token);
         alert("Login successful!");
-        window.location.href = "/"; 
+        window.location.href = "/";
       } else {
         alert("Signup successful! Please log in.");
         setIsLogin(true);
