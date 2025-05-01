@@ -1,4 +1,9 @@
 import React, { useState } from "react";
+import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import "leaflet/dist/leaflet.css";
+import L from "leaflet";
+import markerIcon from "leaflet/dist/images/marker-icon.png";
+import markerShadow from "leaflet/dist/images/marker-shadow.png";
 import "../styles.css";
 
 export function validateSearchCriteria(location, price, bedrooms) {
@@ -32,11 +37,19 @@ export function handleSearchError(error) {
   alert("Error fetching apartments. Please try again later.");
 }
 
+const locationIcon = new L.Icon({
+  iconUrl: markerIcon,
+  shadowUrl: markerShadow,
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
+});
+
 export default function SearchApartments() {
   const [location, setLocation] = useState("");
   const [price, setPrice] = useState("");
   const [bedrooms, setBedrooms] = useState("");
-  const [results, setResults] = useState("");
+  const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
 
   const handleInputChange = (setter) => (e) => setter(e.target.value);
@@ -45,10 +58,10 @@ export default function SearchApartments() {
     if (!validateSearchCriteria(location, price, bedrooms)) return;
 
     setLoading(true);
-    setResults("");
+    setResults([]);
     try {
       const data = await fetchApartments({ location, price, bedrooms });
-      setResults(formatResults(data));
+      setResults(data);
     } catch (error) {
       handleSearchError(error);
     } finally {
@@ -56,7 +69,7 @@ export default function SearchApartments() {
     }
   };
 
-  const clearResults = () => setResults("");
+  const clearResults = () => setResults([]);
 
   return (
     <main>
@@ -71,6 +84,7 @@ export default function SearchApartments() {
         onClear={clearResults}
       />
       <SearchResults loading={loading} results={results} />
+      <MapView apartments={results} />
     </main>
   );
 }
@@ -116,7 +130,41 @@ function SearchResults({ loading, results }) {
   return (
     <section id="results">
       <h2>Results</h2>
-      {loading ? <p>Loading...</p> : <pre>{results}</pre>}
+      {loading ? <p>Loading...</p> : <pre>{formatResults(results)}</pre>}
+    </section>
+  );
+}
+
+function MapView({ apartments }) {
+  const defaultPosition = [37.7749, -122.4194]; // Default to San Francisco
+
+  return (
+    <section id="map-view">
+      <h2>Map View</h2>
+      <MapContainer
+        center={defaultPosition}
+        zoom={12}
+        style={{ height: "400px", width: "100%" }}
+      >
+        <TileLayer
+          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        />
+        {apartments.map((apartment) => (
+          <Marker
+            key={apartment.id}
+            position={[apartment.latitude, apartment.longitude]}
+            icon={locationIcon}
+          >
+            <Popup>
+              <strong>{apartment.title}</strong>
+              <br />
+              {apartment.address}
+              <br />${apartment.price}, {apartment.bedrooms} bedrooms
+            </Popup>
+          </Marker>
+        ))}
+      </MapContainer>
     </section>
   );
 }
