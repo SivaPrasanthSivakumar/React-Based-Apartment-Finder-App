@@ -8,14 +8,11 @@ const jwt = require("jsonwebtoken");
 const app = express();
 const PORT = 5000;
 
-// Secret key for JWT
 const JWT_SECRET = "your_jwt_secret_key";
 
-// Middleware
 setupMiddleware(app);
 app.use(cors());
 
-// MySQL connection setup
 const db = mysql.createConnection({
   host: "localhost",
   user: "root",

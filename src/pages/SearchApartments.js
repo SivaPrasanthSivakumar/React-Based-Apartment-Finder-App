@@ -136,8 +136,7 @@ function SearchResults({ loading, results }) {
 }
 
 function MapView({ apartments }) {
-  const defaultPosition = [37.7749, -122.4194]; // Default to San Francisco
-
+  const defaultPosition = [37.7749, -122.4194];
   return (
     <section id="map-view">
       <h2>Map View</h2>
