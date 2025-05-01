@@ -17,7 +17,7 @@ const LoginSignup = () => {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault(); // Prevent the default form submission behavior
+    e.preventDefault(); 
     const endpoint = isLogin
       ? "http://localhost:5000/api/login"
       : "http://localhost:5000/api/signup";
@@ -27,7 +27,7 @@ const LoginSignup = () => {
       if (isLogin) {
         localStorage.setItem("token", response.data.token);
         alert("Login successful!");
-        window.location.href = "/"; // Redirect to the home page
+        window.location.href = "/"; 
       } else {
         alert("Signup successful! Please log in.");
         setIsLogin(true);
