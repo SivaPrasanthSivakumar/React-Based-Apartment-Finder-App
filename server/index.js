@@ -28,13 +28,10 @@ db.connect((err) => {
   console.log("Connected to the MySQL database.");
 });
 
-// API endpoints
 setupApiEndpoints(app, db);
 
-// Root endpoint
 setupRootEndpoint(app);
 
-// Start the server
 startServer(app, PORT);
 
 function setupMiddleware(app) {
@@ -201,9 +198,9 @@ function userLogin(req, res, db) {
       return res.status(401).send("Invalid email or password.");
     }
 
-    const user = results[0]; // Define the user variable here
+    const user = results[0]; 
 
-    console.log("Hashed Password from DB:", user.password); // Log after user is defined
+    console.log("Hashed Password from DB:", user.password); 
 
     const isPasswordValid = await bcrypt.compare(password, user.password);
     console.log("Password Valid:", isPasswordValid);
@@ -222,7 +219,6 @@ function userLogin(req, res, db) {
 }
 
 function userLogout(req, res) {
-  // For stateless JWT, logout can be handled on the client side by deleting the token.
   res.status(200).send("Logged out successfully.");
 }
 
