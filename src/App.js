@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import { Routes, Route, Link } from "react-router-dom";
 import "./styles.css";
 import SearchApartments from "./pages/SearchApartments";
 import { ContactAgent } from "./pages/ContactAgent";
@@ -9,7 +9,7 @@ import ProtectedRoute from "./ProtectedRoute";
 
 function App() {
   return (
-    <Router>
+    <>
       <Header />
       <Routes>
         <Route path="/login" element={<LoginSignup />} />
@@ -46,7 +46,7 @@ function App() {
           }
         />
       </Routes>
-    </Router>
+    </>
   );
 }
 

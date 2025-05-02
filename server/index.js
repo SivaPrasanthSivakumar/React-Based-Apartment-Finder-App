@@ -61,6 +61,24 @@ function setupApiEndpoints(app, db) {
       res.status(200).json(results.length ? results : []);
     });
   });
+
+  app.post("/api/contact", (req, res) => {
+    const { name, email, message } = req.body;
+
+    if (!name || !email || !message) {
+      return res.status(400).send("All fields are required.");
+    }
+
+    const query =
+      "INSERT INTO contact_messages (name, email, message) VALUES (?, ?, ?)";
+    db.query(query, [name, email, message], (err) => {
+      if (err) {
+        console.error("Error saving contact message:", err);
+        return res.status(500).send("Error saving contact message.");
+      }
+      res.status(201).send("Message saved successfully.");
+    });
+  });
 }
 
 function fetchApartments(req, res, db) {
@@ -198,9 +216,9 @@ function userLogin(req, res, db) {
       return res.status(401).send("Invalid email or password.");
     }
 
-    const user = results[0]; 
+    const user = results[0];
 
-    console.log("Hashed Password from DB:", user.password); 
+    console.log("Hashed Password from DB:", user.password);
 
     const isPasswordValid = await bcrypt.compare(password, user.password);
     console.log("Password Valid:", isPasswordValid);
