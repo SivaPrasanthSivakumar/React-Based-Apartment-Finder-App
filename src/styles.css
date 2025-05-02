@@ -26,7 +26,7 @@ body {
 header {
   background: var(--header-gradient);
   color: white;
-  padding: var(--base-spacing) 5%;
+  padding: var(--base-spacing) 10%;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -124,11 +124,14 @@ nav a:hover {
 
 main {
   padding: 2rem;
-  max-width: 50%;
+  max-width: 80%;
   margin: 0 auto;
+  gap: 2rem;
+  align-items: center;
 }
 
 section {
+  max-width: 80%;
   margin-bottom: 2rem;
   background: white;
   padding: 2rem;
@@ -147,11 +150,11 @@ section:hover {
 input,
 textarea,
 button {
-  display: block;
-  width: 100%;
+  width: 95%;
+  margin: 0 auto;
   margin-bottom: 1rem;
-  padding: 0.75rem;
-  border: 1px solid #ccc;
+  padding: 0.5rem;
+  border: 0.5px solid #ccc;
   border-radius: var(--border-radius);
   font-size: var(--font-size-base);
   box-shadow: var(--box-shadow);
@@ -166,6 +169,10 @@ textarea:focus {
 }
 
 button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 80%;
   background-color: var(--primary-color);
   color: white;
   border: none;
@@ -179,7 +186,7 @@ button {
 
 button:hover {
   background-color: var(--accent-color);
-  transform: scale(1.05);
+  transform: scale(1.01);
 }
 
 link-style-button {
@@ -298,6 +305,15 @@ img,
 video {
   max-width: 100%;
   height: auto;
+}
+
+.parent-container {
+  display: flex; 
+  flex-direction: column; 
+  align-items: center; 
+  justify-content: center; 
+  height: 100vh; 
+  text-align: center; 
 }
 
 @media (max-width: 1024px) {
