@@ -19,8 +19,8 @@ const LoginSignup = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const endpoint = isLogin
-      ? "http://localhost:5000/api/login" 
-      : "http://localhost:5000/api/signup"; 
+      ? "http://localhost:5000/api/login"
+      : "http://localhost:5000/api/signup";
 
     try {
       const response = await axios.post(endpoint, formData);
