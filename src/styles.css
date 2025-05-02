@@ -205,8 +205,9 @@ link-style-button {
 }
 
 #results {
+  max-width: 80%;  
   border: 1px solid #ccc;
-  padding: var(--base-spacing);
+  padding: 2rem;
   background-color: #fff;
   border-radius: var(--border-radius);
   font-size: var(--font-size-base);
