@@ -56,23 +56,6 @@ header nav {
   gap: 1rem;
 }
 
-header .logout-button {
-  background-color: white;
-  color: var(--primary-color);
-  border: none;
-  padding: 0.5rem 1rem;
-  border-radius: var(--border-radius);
-  cursor: pointer;
-  font-size: var(--font-size-base);
-  font-weight: bold;
-  transition: var(--transition);
-}
-
-header .logout-button:hover {
-  background-color: #f1f1f1;
-  transform: scale(1.05);
-}
-
 nav {
   display: flex;
   flex-wrap: wrap;
@@ -89,7 +72,8 @@ nav {
   margin: 0 auto;
 }
 
-nav a {
+nav a,
+.nav-links a {
   color: white;
   text-decoration: none;
   font-size: clamp(0.9rem, 2%, 1rem);
@@ -102,26 +86,35 @@ nav a {
   text-align: center;
 }
 
-nav a:hover {
+nav a:hover,
+.nav-links a:hover {
   background-color: var(--secondary-color);
   transform: scale(1.1);
 }
 
-.logout-button {
+button,
+.logout-button,
+.link-style-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 80%;
+  background-color: var(--primary-color);
   color: white;
   border: none;
-  padding: 0.5rem 1rem;
-  border-radius: var(--border-radius);
-  cursor: pointer;
   font-size: var(--font-size-base);
   font-weight: bold;
+  padding: 0.75rem 1.5rem;
+  border-radius: var(--border-radius);
+  cursor: pointer;
   transition: var(--transition);
-  margin: 0 auto;
 }
 
-.logout-button:hover {
-  background-color: var(--secondary-color);
-  transform: scale(1.5);
+button:hover,
+.logout-button:hover,
+.link-style-button:hover {
+  background-color: var(--accent-color);
+  transform: scale(1.05);
 }
 
 main {
@@ -145,17 +138,16 @@ section {
   gap: 1rem;
 }
 
-section:hover {
+section:hover,
+#results:hover {
   transform: translateY(-0.5rem);
   box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
 }
 
 input,
-textarea,
-button {
+textarea {
   width: 95%;
-  margin: 0 auto;
-  margin-bottom: 1rem;
+  margin: 0 auto 1rem;
   padding: 0.5rem;
   border: 0.5px solid #ccc;
   border-radius: var(--border-radius);
@@ -171,42 +163,6 @@ textarea:focus {
   outline: none;
 }
 
-button {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 80%;
-  background-color: var(--primary-color);
-  color: white;
-  border: none;
-  font-size: var(--font-size-base);
-  font-weight: bold;
-  padding: 0.75rem 1.5rem;
-  border-radius: var(--border-radius);
-  cursor: pointer;
-  transition: var(--transition);
-}
-
-button:hover {
-  background-color: var(--accent-color);
-  transform: scale(1.01);
-}
-
-link-style-button {
-  background: none;
-  border: none;
-  color: var(--primary-color);
-  font-size: var(--font-size-base);
-  font-weight: bold;
-  cursor: pointer;
-  transition: var(--transition);
-}
-
-.link-style-button:hover {
-  color: var(--accent-color);
-  transform: scale(1.05);
-}
-
 #results {
   max-width: 80%;
   border: 1px solid #ccc;
@@ -216,10 +172,6 @@ link-style-button {
   font-size: var(--font-size-base);
   line-height: 1.5;
   box-shadow: var(--box-shadow);
-}
-
-#results:hover {
-  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
 }
 
 #map-view {
@@ -379,7 +331,7 @@ video {
   padding: 2rem;
   max-width: 90%;
   max-height: 90%;
-  margin: 0 auto; 
+  margin: 0 auto;
 }
 
 @media (max-width: 1024px) {
@@ -397,9 +349,9 @@ video {
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 768px), (max-width: 480px) {
   header h1 {
-    font-size: clamp(1.2rem, 3%, 1.5rem);
+    font-size: clamp(1rem, 3%, 1.5rem);
   }
 
   nav {
@@ -412,40 +364,9 @@ video {
     font-size: clamp(0.8rem, 2%, 0.9rem);
   }
 
-  main {
-    padding: 0.5rem;
-  }
-
+  main,
   section {
-    padding: 1rem;
-  }
-
-  button {
-    font-size: clamp(0.8rem, 2%, 0.9rem);
-    padding: 0.5rem 1rem;
-  }
-}
-
-@media (max-width: 480px) {
-  header h1 {
-    font-size: clamp(1rem, 2.5%, 1.2rem);
-  }
-
-  nav {
-    flex-direction: column;
-    gap: 0.25rem;
-  }
-
-  nav a {
-    font-size: clamp(0.8rem, 2%, 0.8rem);
-  }
-
-  main {
     padding: 0.5rem;
-  }
-
-  section {
-    padding: 1rem;
   }
 
   button {
