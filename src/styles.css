@@ -205,7 +205,7 @@ link-style-button {
 }
 
 #results {
-  max-width: 80%;  
+  max-width: 80%;
   border: 1px solid #ccc;
   padding: 2rem;
   background-color: #fff;
@@ -221,8 +221,9 @@ link-style-button {
 
 #map-view {
   margin-top: 2rem;
-  height: 50vh;
+  height: 100%;
   width: 100%;
+  overflow: hidden;
 }
 
 .login-signup-container {
@@ -309,12 +310,12 @@ video {
 }
 
 .parent-container {
-  display: flex; 
-  flex-direction: column; 
-  align-items: center; 
-  justify-content: center; 
-  height: 100vh; 
-  text-align: center; 
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  text-align: center;
 }
 
 @media (max-width: 1024px) {
