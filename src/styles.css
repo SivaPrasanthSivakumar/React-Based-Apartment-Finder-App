@@ -139,11 +139,6 @@ section {
   gap: 1rem;
 }
 
-section:hover,
-#results:hover {
-  transform: translateY(-0.5rem);
-  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
-}
 
 input,
 textarea {
@@ -399,4 +394,19 @@ video {
     flex-wrap: wrap;
     justify-content: center;
   }
+}
+
+.apt-card {
+  background-color: rgb(242, 235, 235);
+  border-radius: "1em";
+  border: #202124 solid 0.1em;
+  margin: 1em auto;
+  box-shadow: 12px 12px 12px rgba(182, 166, 224, 0.1);
+}
+.apt-card p {
+  text-align: left;
+  padding-left: 2em;
+}
+.apt-card:hover {
+  background-color: rgb(247, 252, 195);
 }
