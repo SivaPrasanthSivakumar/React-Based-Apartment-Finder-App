@@ -96,6 +96,7 @@ button,
 .logout-button,
 .link-style-button {
   display: flex;
+  margin: 0 auto;
   justify-content: center;
   align-items: center;
   width: 80%;
