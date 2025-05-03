@@ -72,20 +72,22 @@ export default function SearchApartments() {
   const clearResults = () => setResults([]);
 
   return (
-    <main>
-      <SearchForm
-        location={location}
-        price={price}
-        bedrooms={bedrooms}
-        onLocationChange={handleInputChange(setLocation)}
-        onPriceChange={handleInputChange(setPrice)}
-        onBedroomsChange={handleInputChange(setBedrooms)}
-        onSearch={searchApartments}
-        onClear={clearResults}
-      />
-      <SearchResults loading={loading} results={results} />
-      <MapView apartments={results} />
-    </main>
+    <div className="page-container">
+      <main>
+        <SearchForm
+          location={location}
+          price={price}
+          bedrooms={bedrooms}
+          onLocationChange={handleInputChange(setLocation)}
+          onPriceChange={handleInputChange(setPrice)}
+          onBedroomsChange={handleInputChange(setBedrooms)}
+          onSearch={searchApartments}
+          onClear={clearResults}
+        />
+        <SearchResults loading={loading} results={results} />
+        <MapView apartments={results} />
+      </main>
+    </div>
   );
 }
 

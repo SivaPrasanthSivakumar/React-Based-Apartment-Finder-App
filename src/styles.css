@@ -316,6 +316,7 @@ video {
   justify-content: center;
   height: 100%;
   text-align: center;
+  margin: 0 auto;
 }
 
 .home-page {
@@ -348,8 +349,8 @@ video {
   position: relative;
   padding-bottom: 50%;
   height: 0;
-  margin-top: 2rem; 
-  margin-bottom: 2rem; 
+  margin-top: 2rem;
+  margin-bottom: 2rem;
 }
 
 .home-video iframe {
@@ -364,7 +365,15 @@ video {
 .home-video p {
   margin-top: 1rem;
   font-size: clamp(1rem, 2%, 1.2rem);
-  text-align: center; 
+  text-align: center;
+}
+
+.page-container {
+  text-align: center;
+  padding: 2rem;
+  max-width: 90%;
+  max-height: 90%;
+  margin: 0 auto; 
 }
 
 @media (max-width: 1024px) {
