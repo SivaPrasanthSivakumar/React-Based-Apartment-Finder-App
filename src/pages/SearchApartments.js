@@ -174,6 +174,7 @@ function SearchResults({ loading, results }) {
 
 function MapView({ apartments }) {
   const defaultPosition = [37.7749, -122.4194];
+
   return (
     <section id="map-view" className="centered-section">
       <h2>Map View</h2>
@@ -183,7 +184,7 @@ function MapView({ apartments }) {
         style={{ height: "400px", width: "100%" }}
       >
         <TileLayer
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          url="https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png"
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         />
         {apartments.map((apartment) => (
@@ -191,6 +192,20 @@ function MapView({ apartments }) {
             key={apartment.id}
             position={[apartment.latitude, apartment.longitude]}
             icon={locationIcon}
+            eventHandlers={{
+              mouseover: (e) => {
+                const popup = e.target.getPopup();
+                if (popup) {
+                  popup.openOn(e.target._map);
+                }
+              },
+              mouseout: (e) => {
+                const popup = e.target.getPopup();
+                if (popup) {
+                  popup.close();
+                }
+              },
+            }}
           >
             <Popup>
               <strong>{apartment.title}</strong>
