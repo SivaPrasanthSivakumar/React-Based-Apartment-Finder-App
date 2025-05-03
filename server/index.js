@@ -8,8 +8,6 @@ const jwt = require("jsonwebtoken");
 const app = express();
 const PORT = 5000;
 
-const JWT_SECRET = "your_jwt_secret_key";
-
 setupMiddleware(app);
 app.use(cors());
 
@@ -78,23 +76,6 @@ function setupApiEndpoints(app, db) {
       }
       res.status(201).send("Message saved successfully.");
     });
-  });
-}
-
-function fetchApartments(req, res, db) {
-  console.log("GET /api/apartments called with query:", req.query);
-  const { location, price, bedrooms } = req.query;
-
-  const { query, params } = buildApartmentQuery(location, price, bedrooms);
-  console.log("SQL Query:", query, "Params:", params);
-
-  db.query(query, params, (err, results) => {
-    if (err) {
-      console.error("Error fetching apartments:", err);
-      return res.status(500).send("Error fetching apartments.");
-    }
-    console.log("Query Results:", results);
-    res.status(200).json(results.length ? results : []);
   });
 }
 
@@ -234,10 +215,6 @@ function userLogin(req, res, db) {
     );
     res.status(200).json({ token });
   });
-}
-
-function userLogout(req, res) {
-  res.status(200).send("Logged out successfully.");
 }
 
 function setupRootEndpoint(app) {
