@@ -318,6 +318,55 @@ video {
   text-align: center;
 }
 
+.home-page {
+  text-align: center;
+  padding: 2rem;
+  max-width: 50%;
+  margin: 0 auto;
+}
+
+.home-header {
+  background: white;
+  color: rgb(0, 0, 0);
+  padding: 2rem;
+  border-radius: var(--border-radius);
+  margin-bottom: 2rem;
+}
+
+.home-header h2 {
+  background: white;
+  color: rgb(0, 0, 0);
+  font-size: clamp(1.8rem, 3%, 2.5rem);
+  margin-bottom: 1rem;
+}
+
+.home-header p {
+  font-size: clamp(1rem, 2%, 1.5rem);
+}
+
+.home-video {
+  position: relative;
+  padding-bottom: 50%;
+  height: 0;
+  margin-top: 2rem; 
+  margin-bottom: 2rem; 
+}
+
+.home-video iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: var(--border-radius);
+}
+
+.home-video p {
+  margin-top: 1rem;
+  font-size: clamp(1rem, 2%, 1.2rem);
+  text-align: center; 
+}
+
 @media (max-width: 1024px) {
   main {
     padding: 1rem;

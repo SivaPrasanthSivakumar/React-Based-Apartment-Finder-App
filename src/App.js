@@ -80,37 +80,13 @@ function Header() {
 
 function HomePage() {
   return (
-    <div
-      style={{
-        textAlign: "center",
-        padding: "2rem",
-        maxWidth: "1200px",
-        margin: "0 auto",
-      }}
-    >
-      <h2 style={{ fontSize: "clamp(1.5rem, 3vw, 2.5rem)" }}>
-        Welcome to Apartment Finder
-      </h2>
-      <p style={{ fontSize: "clamp(1rem, 2vw, 1.5rem)" }}>
-        Use the navigation to explore the app.
-      </p>
-      <div
-        style={{
-          marginTop: "2rem",
-          position: "relative",
-          paddingBottom: "56.25%",
-          height: 0,
-        }}
-      >
+    <div className="home-page">
+      <header className="home-header">
+        <h2>Welcome to Apartment Finder</h2>
+        <p>Use the navigation to explore the app.</p>
+      </header>
+      <div className="home-video">
         <iframe
-          style={{
-            position: "absolute",
-            top: 0,
-            left: 0,
-            width: "100%",
-            height: "100%",
-            borderRadius: "var(--border-radius)",
-          }}
           src="https://www.youtube.com/embed/g-Jz3TYrdQs"
           title="YouTube video player"
           frameBorder="0"
@@ -118,10 +94,10 @@ function HomePage() {
           allowFullScreen
         ></iframe>
       </div>
-      <p style={{ fontSize: "clamp(1rem, 2vw, 1.2rem)" }}>
-        RENTING VS BUYING (what's better?)
-      </p>
-      <p style={{ fontSize: "clamp(0.9rem, 2vw, 1.1rem)" }}>By Mark Tilbury</p>
+      <header className="home-header h2">
+          <p>RENTING VS BUYING (what's better?)</p>
+          <p>By Mark Tilbury</p>
+        </header>
     </div>
   );
 }
