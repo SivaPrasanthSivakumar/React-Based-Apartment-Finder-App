@@ -19,14 +19,16 @@ export function ContactAgent() {
   const clearForm = () => setFormData(initialFormData());
 
   return (
-    <main>
-      <ContactForm
-        formData={formData}
-        onInputChange={handleInputChange}
-        onSubmit={handleSubmit}
-        onClear={clearForm}
-      />
-    </main>
+    <div className="page-container">
+      <main>
+        <ContactForm
+          formData={formData}
+          onInputChange={handleInputChange}
+          onSubmit={handleSubmit}
+          onClear={clearForm}
+        />
+      </main>
+    </div>
   );
 }
 

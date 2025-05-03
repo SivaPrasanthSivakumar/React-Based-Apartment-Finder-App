@@ -35,16 +35,18 @@ export default function Contribute() {
   const clearForm = () => setFormData(initialFormData());
 
   return (
-    <main>
-      <ContributeForm
-        formData={formData}
-        onInputChange={handleInputChange}
-        onSubmit={handleSubmit}
-        onClear={clearForm}
-        error={error}
-        success={success}
-      />
-    </main>
+    <div className="page-container">
+      <main>
+        <ContributeForm
+          formData={formData}
+          onInputChange={handleInputChange}
+          onSubmit={handleSubmit}
+          onClear={clearForm}
+          error={error}
+          success={success}
+        />
+      </main>
+    </div>
   );
 }
 
