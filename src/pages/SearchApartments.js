@@ -187,34 +187,40 @@ function MapView({ apartments }) {
           url="https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png"
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         />
-        {apartments.map((apartment) => (
-          <Marker
-            key={apartment.id}
-            position={[apartment.latitude, apartment.longitude]}
-            icon={locationIcon}
-            eventHandlers={{
-              mouseover: (e) => {
-                const popup = e.target.getPopup();
-                if (popup) {
-                  popup.openOn(e.target._map);
-                }
-              },
-              mouseout: (e) => {
-                const popup = e.target.getPopup();
-                if (popup) {
-                  popup.close();
-                }
-              },
-            }}
-          >
-            <Popup>
-              <strong>{apartment.title}</strong>
-              <br />
-              {apartment.address}
-              <br />${apartment.price}, {apartment.bedrooms} bedrooms
-            </Popup>
-          </Marker>
-        ))}
+        {apartments
+          .filter(
+            (apartment) =>
+              apartment.latitude !== undefined &&
+              apartment.longitude !== undefined
+          )
+          .map((apartment) => (
+            <Marker
+              key={apartment.id}
+              position={[apartment.latitude, apartment.longitude]}
+              icon={locationIcon}
+              eventHandlers={{
+                mouseover: (e) => {
+                  const popup = e.target.getPopup();
+                  if (popup) {
+                    popup.openOn(e.target._map);
+                  }
+                },
+                mouseout: (e) => {
+                  const popup = e.target.getPopup();
+                  if (popup) {
+                    popup.close();
+                  }
+                },
+              }}
+            >
+              <Popup>
+                <strong>{apartment.title}</strong>
+                <br />
+                {apartment.address}
+                <br />${apartment.price}, {apartment.bedrooms} bedrooms
+              </Popup>
+            </Marker>
+          ))}
       </MapContainer>
     </section>
   );
