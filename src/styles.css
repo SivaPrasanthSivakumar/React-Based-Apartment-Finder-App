@@ -336,17 +336,12 @@ video {
 .home-header h2 {
   background: white;
   color: rgb(0, 0, 0);
-  font-size: clamp(1.8rem, 3vw, 2.5rem);
+  font-size: clamp(1.8rem, 3%, 2.5rem);
   margin-bottom: 1rem;
 }
 
-.home-page :hover {
-  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
-  transform: translateY(1.01rem);
-}
-
 .home-header p {
-  font-size: clamp(1rem, 2vw, 1.5rem);
+  font-size: clamp(1rem, 2%, 1.5rem);
 }
 
 .home-video {
@@ -368,7 +363,7 @@ video {
 
 .home-video p {
   margin-top: 1rem;
-  font-size: clamp(1rem, 2vw, 1.2rem);
+  font-size: clamp(1rem, 2%, 1.2rem);
   text-align: center; 
 }
 
