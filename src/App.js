@@ -61,7 +61,6 @@ function Header() {
       <div className="left-section">
         <h1>Apartment Finder</h1>
       </div>
-      <div className="middle-section"></div>
       <div className="right-section">
         <nav>
           <div className="nav-links">
