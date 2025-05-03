@@ -23,12 +23,27 @@ export async function fetchApartments({ location, price, bedrooms }) {
 
 export function formatResults(data) {
   return data.length
-    ? data
-        .map(
-          (apartment) =>
-            `${apartment.title} - $${apartment.price}, ${apartment.bedrooms} bedrooms, Address: ${apartment.address}`
-        )
-        .join("\n")
+    ? data.map((apartment) => (
+        <div key={apartment.id} className="apt-card">
+          <h2>{apartment.title}</h2>
+          <p>
+            {" "}
+            <strong>Price: </strong>
+            {apartment.price}
+          </p>
+          <p>
+            {" "}
+            <strong>Bedrooms: </strong>
+            {apartment.bedrooms}
+          </p>
+
+          <p>
+            {" "}
+            <strong>Address: </strong>
+            {apartment.address}
+          </p>
+        </div>
+      ))
     : "No apartments found.";
 }
 
@@ -72,7 +87,7 @@ export default function SearchApartments() {
   const clearResults = () => setResults([]);
 
   return (
-    <div className="page-container">
+    <div className="page-container centered-section">
       <main>
         <SearchForm
           location={location}
@@ -102,25 +117,45 @@ function SearchForm({
   onClear,
 }) {
   return (
-    <section id="search">
+    <section id="search" className="centered-section">
       <h2>Search Apartments</h2>
       <input
         type="text"
         value={location}
         onChange={onLocationChange}
         placeholder="Enter location"
+        onKeyDown={(e) => {
+          if (e.key === "Enter") {
+            e.preventDefault();
+            onSearch();
+          }
+        }}
       />
       <input
         type="number"
         value={price}
+        step={100}
         onChange={onPriceChange}
         placeholder="Max price"
+        onKeyDown={(e) => {
+          if (e.key === "Enter") {
+            e.preventDefault();
+            onSearch();
+          }
+        }}
       />
       <input
         type="number"
         value={bedrooms}
+        step={1}
         onChange={onBedroomsChange}
         placeholder="Bedrooms"
+        onKeyDown={(e) => {
+          if (e.key === "Enter") {
+            e.preventDefault();
+            onSearch();
+          }
+        }}
       />
       <button onClick={onSearch}>Search</button>
       <button onClick={onClear}>Clear</button>
@@ -130,7 +165,7 @@ function SearchForm({
 
 function SearchResults({ loading, results }) {
   return (
-    <section id="results">
+    <section id="results" className="centered-section">
       <h2>Results</h2>
       {loading ? <p>Loading...</p> : <pre>{formatResults(results)}</pre>}
     </section>
@@ -139,8 +174,9 @@ function SearchResults({ loading, results }) {
 
 function MapView({ apartments }) {
   const defaultPosition = [37.7749, -122.4194];
+
   return (
-    <section id="map-view">
+    <section id="map-view" className="centered-section">
       <h2>Map View</h2>
       <MapContainer
         center={defaultPosition}
@@ -148,7 +184,7 @@ function MapView({ apartments }) {
         style={{ height: "400px", width: "100%" }}
       >
         <TileLayer
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          url="https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png"
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         />
         {apartments.map((apartment) => (
@@ -156,6 +192,20 @@ function MapView({ apartments }) {
             key={apartment.id}
             position={[apartment.latitude, apartment.longitude]}
             icon={locationIcon}
+            eventHandlers={{
+              mouseover: (e) => {
+                const popup = e.target.getPopup();
+                if (popup) {
+                  popup.openOn(e.target._map);
+                }
+              },
+              mouseout: (e) => {
+                const popup = e.target.getPopup();
+                if (popup) {
+                  popup.close();
+                }
+              },
+            }}
           >
             <Popup>
               <strong>{apartment.title}</strong>
