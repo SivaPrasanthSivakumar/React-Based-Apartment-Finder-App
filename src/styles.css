@@ -86,6 +86,7 @@ nav {
   gap: 1rem;
   justify-content: flex-end;
   align-items: center;
+  margin: 0 auto;
 }
 
 nav a {
@@ -115,11 +116,12 @@ nav a:hover {
   font-size: var(--font-size-base);
   font-weight: bold;
   transition: var(--transition);
+  margin: 0 auto;
 }
 
 .logout-button:hover {
   background-color: var(--secondary-color);
-  transform: scale(1.1);
+  transform: scale(1.5);
 }
 
 main {
@@ -132,6 +134,7 @@ main {
 
 section {
   max-width: 80%;
+  margin: 0 auto;
   margin-bottom: 2rem;
   background: white;
   padding: 2rem;
@@ -221,6 +224,7 @@ link-style-button {
 
 #map-view {
   margin-top: 2rem;
+  margin: 0 auto;
   height: 100%;
   width: 100%;
   overflow: hidden;
@@ -228,7 +232,9 @@ link-style-button {
 
 .login-signup-container {
   max-width: 50%;
-  margin: 3rem auto;
+  margin: 0 auto;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
   padding: 2rem;
   border: 0.1rem solid #ccc;
   border-radius: var(--border-radius);
