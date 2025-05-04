@@ -77,6 +77,8 @@ function setupApiEndpoints(app, db) {
       res.status(201).send("Message saved successfully.");
     });
   });
+
+  app.post("/api/apartments", (req, res) => addApartment(req, res, db));
 }
 
 function buildApartmentQuery(location, price, bedrooms) {
