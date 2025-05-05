@@ -59,7 +59,9 @@ function Header() {
   return (
     <header>
       <div className="left-section">
-        <h1>Apartment Finder</h1>
+        <Link to="/" style={{ textDecoration: "none", color: "inherit" }}>
+          <h1>Apartment Finder</h1>
+        </Link>
       </div>
       <div className="right-section">
         <nav>
