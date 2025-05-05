@@ -156,6 +156,7 @@ textarea:focus {
   outline: none;
 }
 
+
 #results {
   max-width: 80%;
   border: 1px solid #ccc;
@@ -275,15 +276,20 @@ video {
   padding: 2rem;
   max-width: 50%;
   margin: 0 auto;
+  
 }
 
 .home-header {
+  position: relative;
+  z-index: 1;
   background: white;
   color: rgb(0, 0, 0);
   padding: 2rem;
   border-radius: var(--border-radius);
   margin-bottom: 2rem;
 }
+
+
 
 .home-header h2 {
   background: white;

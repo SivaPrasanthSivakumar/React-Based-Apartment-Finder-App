@@ -83,10 +83,10 @@ function Header() {
 function HomePage() {
   return (
     <div className="home-page">
-      <div className="home-header">
+      <header className="home-header">
         <h2>Welcome to Apartment Finder</h2>
         <p>Use the navigation to explore the app.</p>
-      </div>
+      </header>
       <div className="home-video">
         <iframe
           src="https://www.youtube.com/embed/2iGw3Yac-uQ?si=pC0ZuLp67wrnXePa"
