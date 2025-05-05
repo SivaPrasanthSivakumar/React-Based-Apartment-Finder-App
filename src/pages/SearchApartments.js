@@ -187,13 +187,21 @@ function MapView({ apartments }) {
           url="https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png"
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         />
-        {apartments
-          .filter(
-            (apartment) =>
-              apartment.latitude !== undefined &&
-              apartment.longitude !== undefined
-          )
-          .map((apartment) => (
+        {apartments.map((apartment) => {
+          const hasValidCoordinates =
+            apartment.latitude !== undefined &&
+            apartment.longitude !== undefined &&
+            !isNaN(apartment.latitude) &&
+            !isNaN(apartment.longitude);
+
+          if (!hasValidCoordinates) {
+            console.warn(
+              `Apartment ${apartment.id} is missing valid coordinates.`
+            );
+            return null; 
+          }
+
+          return (
             <Marker
               key={apartment.id}
               position={[apartment.latitude, apartment.longitude]}
@@ -220,7 +228,8 @@ function MapView({ apartments }) {
                 <br />${apartment.price}, {apartment.bedrooms} bedrooms
               </Popup>
             </Marker>
-          ))}
+          );
+        })}
       </MapContainer>
     </section>
   );
