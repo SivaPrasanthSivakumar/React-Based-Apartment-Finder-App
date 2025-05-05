@@ -68,11 +68,11 @@ function Header() {
             <Link to="/search">Search Apartments</Link>
             <Link to="/contribute">Contribute</Link>
             <Link to="/contact">Contact Agent</Link>
+            <button className="logout-button" onClick={handleLogout}>
+              Logout
+            </button>
           </div>
         </nav>
-        <button className="logout-button" onClick={handleLogout}>
-          Logout
-        </button>
       </div>
     </header>
   );
@@ -81,9 +81,22 @@ function Header() {
 function HomePage() {
   return (
     <div className="home-page">
-      <header className="home-header">
+      <div className="home-header">
         <h2>Welcome to Apartment Finder</h2>
         <p>Use the navigation to explore the app.</p>
+      </div>
+      <div className="home-video">
+        <iframe
+          src="https://www.youtube.com/embed/2iGw3Yac-uQ?si=pC0ZuLp67wrnXePa"
+          title="YouTube video player"
+          frameBorder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowFullScreen
+        ></iframe>
+      </div>
+      <header className="home-header h2">
+        <p>Buying vs Renting A Home - Dave Ramsey Rant</p>
+        <p>By Dave Ramsey From The Ramsey Show Highlights</p>
       </header>
       <div className="home-video">
         <iframe
@@ -95,9 +108,9 @@ function HomePage() {
         ></iframe>
       </div>
       <header className="home-header h2">
-          <p>RENTING VS BUYING (what's better?)</p>
-          <p>By Mark Tilbury</p>
-        </header>
+        <p>RENTING VS BUYING (what's better?)</p>
+        <p>By Mark Tilbury</p>
+      </header>
     </div>
   );
 }

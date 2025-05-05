@@ -24,6 +24,7 @@ body {
 }
 
 header {
+  position: sticky;
   background: var(--header-gradient);
   color: white;
   padding: var(--base-spacing) 10%;
@@ -31,45 +32,42 @@ header {
   justify-content: space-between;
   align-items: center;
   box-shadow: var(--box-shadow);
-  position: sticky;
   top: 0;
   z-index: 1000;
 }
 
 header .left-section {
   display: flex;
-  align-items: center;
-}
-
-header .middle-section {
+  width: fit-content;
   flex-grow: 1;
+  align-items: center;
 }
 
 header .right-section {
   display: flex;
+  flex-direction: row;
+  min-width: 20vw;
+  width: "fit-content";
+  justify-content: space-between;
   align-items: center;
   gap: 1rem;
 }
 
 header nav {
-  display: flex;
   gap: 1rem;
 }
 
 nav {
+  position: fixed;
   display: flex;
-  flex-wrap: wrap;
   gap: 1rem;
   align-items: center;
 }
 
 .nav-links {
   display: flex;
-  flex-wrap: nowrap;
+  flex-direction: row;
   gap: 1rem;
-  justify-content: flex-end;
-  align-items: center;
-  margin: 0 auto;
 }
 
 nav a,
@@ -99,7 +97,7 @@ button,
   margin: 0 auto;
   justify-content: center;
   align-items: center;
-  width: 80%;
+  width: fit-content;
   background-color: var(--primary-color);
   color: white;
   border: none;
@@ -138,7 +136,6 @@ section {
   display: grid;
   gap: 1rem;
 }
-
 
 input,
 textarea {
