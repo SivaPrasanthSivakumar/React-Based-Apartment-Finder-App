@@ -26,6 +26,10 @@ CREATE TABLE IF NOT EXISTS apartments (
     FOREIGN KEY (agent_id) REFERENCES users(id)
 );
 
+CREATE INDEX idx_address ON apartments (address);
+CREATE INDEX idx_price ON apartments (price);
+CREATE INDEX idx_bedrooms ON apartments (bedrooms);
+
 -- Add a table for storing contact messages
 CREATE TABLE IF NOT EXISTS contact_messages (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -39,6 +43,7 @@ CREATE TABLE IF NOT EXISTS contact_messages (
 INSERT INTO users (first_name, last_name, email, password, role)
 VALUES
 ('John', 'Doe', 'john.doe@example.com', 'password123', 'agent'),
+('John', 'Doe', 'agent@gmail.com', 'password', 'agent'),
 ('Jane', 'Smith', 'jane.smith@example.com', 'password123', 'client'),
 ('Admin', 'User', 'admin@example.com', 'adminpassword', 'admin');
 

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import { Routes, Route, Link } from "react-router-dom";
 import "./styles.css";
 import SearchApartments from "./pages/SearchApartments";
@@ -50,7 +50,7 @@ function App() {
   );
 }
 
-function Header() {
+const Header = memo(function Header() {
   const handleLogout = () => {
     localStorage.removeItem("token");
     window.location.href = "/login";
@@ -78,9 +78,9 @@ function Header() {
       </div>
     </header>
   );
-}
+});
 
-function HomePage() {
+const HomePage = memo(function HomePage() {
   return (
     <div className="home-page">
       <header className="home-header">
@@ -115,6 +115,6 @@ function HomePage() {
       </header>
     </div>
   );
-}
+});
 
 export default App;

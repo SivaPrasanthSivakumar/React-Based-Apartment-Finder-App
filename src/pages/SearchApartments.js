@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
@@ -67,9 +67,12 @@ export default function SearchApartments() {
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  const handleInputChange = (setter) => (e) => setter(e.target.value);
+  const handleInputChange = useCallback(
+    (setter) => (e) => setter(e.target.value),
+    []
+  );
 
-  const searchApartments = async () => {
+  const searchApartments = useCallback(async () => {
     if (!validateSearchCriteria(location, price, bedrooms)) return;
 
     setLoading(true);
@@ -82,9 +85,9 @@ export default function SearchApartments() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [location, price, bedrooms]);
 
-  const clearResults = () => setResults([]);
+  const clearResults = useCallback(() => setResults([]), []);
 
   return (
     <div className="page-container centered-section">
@@ -187,49 +190,54 @@ function MapView({ apartments }) {
           url="https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png"
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         />
-        {apartments.map((apartment) => {
-          const hasValidCoordinates =
-            apartment.latitude !== undefined &&
-            apartment.longitude !== undefined &&
-            !isNaN(apartment.latitude) &&
-            !isNaN(apartment.longitude);
+        {apartments
+          .filter(
+            (apartment) =>
+              apartment.latitude !== undefined &&
+              apartment.longitude !== undefined &&
+              !isNaN(apartment.latitude) &&
+              !isNaN(apartment.longitude)
+          )
+          .map((apartment) => {
+            const position = [apartment.latitude, apartment.longitude];
 
-          if (!hasValidCoordinates) {
-            console.warn(
-              `Apartment ${apartment.id} is missing valid coordinates.`
+            return (
+              <Marker
+                key={apartment.id}
+                position={position}
+                icon={locationIcon}
+                eventHandlers={{
+                  mouseover: (e) => {
+                    try {
+                      const popup = e.target.getPopup();
+                      if (popup) {
+                        popup.openOn(e.target._map);
+                      }
+                    } catch (error) {
+                      console.error("Error in mouseover event:", error);
+                    }
+                  },
+                  mouseout: (e) => {
+                    try {
+                      const popup = e.target.getPopup();
+                      if (popup) {
+                        popup.close();
+                      }
+                    } catch (error) {
+                      console.error("Error in mouseout event:", error);
+                    }
+                  },
+                }}
+              >
+                <Popup>
+                  <strong>{apartment.title}</strong>
+                  <br />
+                  {apartment.address}
+                  <br />${apartment.price}, {apartment.bedrooms} bedrooms
+                </Popup>
+              </Marker>
             );
-            return null; 
-          }
-
-          return (
-            <Marker
-              key={apartment.id}
-              position={[apartment.latitude, apartment.longitude]}
-              icon={locationIcon}
-              eventHandlers={{
-                mouseover: (e) => {
-                  const popup = e.target.getPopup();
-                  if (popup) {
-                    popup.openOn(e.target._map);
-                  }
-                },
-                mouseout: (e) => {
-                  const popup = e.target.getPopup();
-                  if (popup) {
-                    popup.close();
-                  }
-                },
-              }}
-            >
-              <Popup>
-                <strong>{apartment.title}</strong>
-                <br />
-                {apartment.address}
-                <br />${apartment.price}, {apartment.bedrooms} bedrooms
-              </Popup>
-            </Marker>
-          );
-        })}
+          })}
       </MapContainer>
     </section>
   );

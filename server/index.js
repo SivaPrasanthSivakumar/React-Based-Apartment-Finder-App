@@ -26,6 +26,8 @@ db.connect((err) => {
   console.log("Connected to the MySQL database.");
 });
 
+const cache = new Map();
+
 setupApiEndpoints(app, db);
 
 setupRootEndpoint(app);
@@ -44,6 +46,12 @@ function setupApiEndpoints(app, db) {
   app.get("/api/apartments", (req, res) => {
     console.log("GET /api/apartments called with query:", req.query);
 
+    const cacheKey = JSON.stringify(req.query);
+    if (cache.has(cacheKey)) {
+      console.log("Serving from cache");
+      return res.status(200).json(cache.get(cacheKey));
+    }
+
     const { location, price, bedrooms } = req.query;
     const { query, params } = buildApartmentQuery(location, price, bedrooms);
 
@@ -56,6 +64,7 @@ function setupApiEndpoints(app, db) {
       }
 
       console.log("Query Results:", results);
+      cache.set(cacheKey, results);
       res.status(200).json(results.length ? results : []);
     });
   });
