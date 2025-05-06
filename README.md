@@ -10,6 +10,7 @@ This is a modern full-stack application for finding apartments. The project incl
 - Contribute new apartment listings.
 - Responsive design for mobile and desktop users.
 - User authentication with login and signup functionality.
+- Optimized performance with caching for faster responses.
 
 ## Prerequisites
 

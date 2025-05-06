@@ -60,7 +60,7 @@ const locationIcon = new L.Icon({
   popupAnchor: [1, -34],
 });
 
-const cache = new Map(); 
+const cache = new Map();
 
 export default function SearchApartments() {
   const [location, setLocation] = useState("");
@@ -77,7 +77,6 @@ export default function SearchApartments() {
   const searchApartments = useCallback(async () => {
     const cacheKey = JSON.stringify({ location, price, bedrooms });
     if (cache.has(cacheKey)) {
-      console.log("Serving results from cache");
       setResults(cache.get(cacheKey));
       return;
     }
@@ -88,7 +87,7 @@ export default function SearchApartments() {
     setResults([]);
     try {
       const data = await fetchApartments({ location, price, bedrooms });
-      cache.set(cacheKey, data); 
+      cache.set(cacheKey, data);
       setResults(data);
     } catch (error) {
       handleSearchError(error);
@@ -97,7 +96,12 @@ export default function SearchApartments() {
     }
   }, [location, price, bedrooms]);
 
-  const clearResults = useCallback(() => setResults([]), []);
+  const clearResults = useCallback(() => {
+    setResults([]);
+    setLocation("");
+    setPrice("");
+    setBedrooms("");
+  }, []);
 
   return (
     <div className="page-container centered-section">

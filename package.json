@@ -1,7 +1,7 @@
 {
   "name": "apartment-finder",
-  "version": "1.0.1",
-  "description": "A full-stack application for finding apartments with a React frontend, Node.js backend, and MySQL database.",
+  "version": "1.0.2",
+  "description": "A full-stack application for finding apartments with a React frontend, Node.js backend, and MySQL database. Now optimized with caching.",
   "main": "index.js",
   "scripts": {
     "start": "set NODE_OPTIONS=--openssl-legacy-provider && concurrently \"node server/index.js\" \"npx react-scripts start\"",
