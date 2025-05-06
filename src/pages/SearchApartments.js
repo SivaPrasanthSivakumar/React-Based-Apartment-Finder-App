@@ -206,28 +206,6 @@ function MapView({ apartments }) {
                 key={apartment.id}
                 position={position}
                 icon={locationIcon}
-                eventHandlers={{
-                  mouseover: (e) => {
-                    try {
-                      const popup = e.target.getPopup();
-                      if (popup) {
-                        popup.openOn(e.target._map);
-                      }
-                    } catch (error) {
-                      console.error("Error in mouseover event:", error);
-                    }
-                  },
-                  mouseout: (e) => {
-                    try {
-                      const popup = e.target.getPopup();
-                      if (popup) {
-                        popup.close();
-                      }
-                    } catch (error) {
-                      console.error("Error in mouseout event:", error);
-                    }
-                  },
-                }}
               >
                 <Popup>
                   <strong>{apartment.title}</strong>
