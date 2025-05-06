@@ -26,7 +26,7 @@ db.connect((err) => {
   console.log("Connected to the MySQL database.");
 });
 
-const cache = new Map();
+const cache = new Map(); 
 
 setupApiEndpoints(app, db);
 
@@ -64,7 +64,7 @@ function setupApiEndpoints(app, db) {
       }
 
       console.log("Query Results:", results);
-      cache.set(cacheKey, results);
+      cache.set(cacheKey, results); 
       res.status(200).json(results.length ? results : []);
     });
   });
@@ -87,7 +87,32 @@ function setupApiEndpoints(app, db) {
     });
   });
 
-  app.post("/api/apartments", (req, res) => addApartment(req, res, db));
+  app.post("/api/apartments", (req, res) => {
+    console.log("POST /api/apartments called with data:", req.body);
+
+    const { title, address, price, bedrooms, latitude, longitude } = req.body;
+
+    if (!title || !address || !price || !bedrooms || !latitude || !longitude) {
+      return res.status(400).send("All fields are required.");
+    }
+
+    const query =
+      "INSERT INTO apartments (agent_id, title, address, price, bedrooms, latitude, longitude) VALUES (?, ?, ?, ?, ?, ?, ?)";
+    db.query(
+      query,
+      [1, title, address, price, bedrooms, latitude, longitude],
+      (err) => {
+        if (err) {
+          console.error("Error adding apartment:", err);
+          return res.status(500).send(`Error adding apartment: ${err.message}`);
+        }
+
+        console.log("Apartment added successfully.");
+        cache.clear(); 
+        res.status(201).send("Apartment added successfully.");
+      }
+    );
+  });
 }
 
 function buildApartmentQuery(location, price, bedrooms) {
