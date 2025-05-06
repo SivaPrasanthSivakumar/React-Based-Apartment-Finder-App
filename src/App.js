@@ -89,19 +89,6 @@ const HomePage = memo(function HomePage() {
       </header>
       <div className="home-video">
         <iframe
-          src="https://www.youtube.com/embed/2iGw3Yac-uQ?si=pC0ZuLp67wrnXePa"
-          title="YouTube video player"
-          frameBorder="0"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowFullScreen
-        ></iframe>
-      </div>
-      <header className="home-header h2">
-        <p>Buying vs Renting A Home - Dave Ramsey Rant</p>
-        <p>By Dave Ramsey From The Ramsey Show Highlights</p>
-      </header>
-      <div className="home-video">
-        <iframe
           src="https://www.youtube.com/embed/g-Jz3TYrdQs"
           title="YouTube video player"
           frameBorder="0"
@@ -112,6 +99,19 @@ const HomePage = memo(function HomePage() {
       <header className="home-header h2">
         <p>RENTING VS BUYING (what's better?)</p>
         <p>By Mark Tilbury</p>
+      </header>
+      <div className="home-video">
+        <iframe
+          src="https://www.youtube.com/embed/2iGw3Yac-uQ?si=pC0ZuLp67wrnXePa"
+          title="YouTube video player"
+          frameBorder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowFullScreen
+        ></iframe>
+      </div>
+      <header className="home-header h2">
+        <p>Buying vs Renting A Home - Dave Ramsey Rant</p>
+        <p>By Dave Ramsey From The Ramsey Show Highlights</p>
       </header>
     </div>
   );
